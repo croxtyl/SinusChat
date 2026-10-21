@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tor_route_title">Маршрут через Tor</string>
+    <string name="tor_route_sub">Подивіться, через які країни йде з’єднання</string>
+    <string name="tor_route_section">Ваш маршрут</string>
+    <string name="tor_route_security">Безпека</string>
+    <string name="tor_route_off">Увімкніть Tor у налаштуваннях конфіденційності, щоб побачити маршрут.</string>
+    <string name="tor_route_loading">Перевіряю маршрут…</string>
+    <string name="tor_route_none">Tor ще будує маршрут. Спробуйте за мить.</string>
+    <string name="tor_route_you">Ваш телефон</string>
+    <string name="tor_route_guard">Вхідний вузол</string>
+    <string name="tor_route_middle">Середній вузол</string>
+    <string name="tor_route_exit">Вихідний вузол</string>
+    <string name="tor_route_server">Сервер SinusChat</string>
+    <string name="tor_route_unknown_country">Невідома країна</string>
+    <string name="tor_route_same">Два вузли цього маршруту в одній країні: %1$s.</string>
+    <string name="tor_route_new">Новий маршрут</string>
+    <string name="tor_route_new_done">Будую новий маршрут…</string>
+    <string name="tor_route_distinct">Уникати тієї самої країни</string>
+    <string name="tor_route_distinct_desc">Маршрут не пройде двічі через ту саму країну. Додатковий захист: з’єднання може встановлюватися трохи довше, а ваші маршрути будуть трохи менше схожі на маршрути інших користувачів Tor.</string>
+    <string name="tor_route_footer">Tor навмисно залишає вхідний вузол на кілька місяців, бо це ускладнює ваше відстеження. Середній і вихідний вузли регулярно змінюються. Країни вузлів беруться з бази IPFire Location (CC BY-SA 4.0), що постачається разом із Tor.</string>
+    <string name="tor_startup_progress">Під’єднуюся до мережі Tor… %1$d%%</string>
+</resources>

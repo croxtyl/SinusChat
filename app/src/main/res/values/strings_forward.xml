@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="forward_to">Przekaż do…</string>
+    <string name="no_chats">Brak rozmów</string>
+
+    <string name="forward_title_share">Wyślij w SinusChat</string>
+    <string name="forward_search_hint">Szukaj rozmowy</string>
+    <string name="forward_you_forward">Przekazujesz</string>
+    <string name="forward_you_share">Udostępniasz</string>
+    <string name="forward_chats_label">Ostatnie rozmowy</string>
+    <string name="forward_no_results">Nie ma takiej rozmowy</string>
+    <string name="forward_comment_hint">Dodaj wiadomość…</string>
+    <string name="forward_send_cd">Wyślij</string>
+    <string name="forward_sending">Wysyłanie… %1$d%%</string>
+    <string name="forward_sent_to">Wysłano do: %1$s</string>
+    <string name="forward_sent_many">Wysłano do %1$d rozmów</string>
+    <string name="forward_not_sent">Nie wysłano:</string>
+    <string name="forward_failed_line">%1$s — %2$s</string>
+    <string name="forward_skipped">Pominięto %1$s — za duży albo nie da się go odczytać</string>
+    <string name="forward_too_large">%1$s jest za duży — limit to 150 MB</string>
+    <string name="forward_limit">Naraz możesz wybrać do %1$d rozmów</string>
+    <string name="forward_view_once">Wiadomości jednorazowych nie da się przekazać</string>
+    <string name="forward_not_downloaded">Część załączników nie jest pobrana — otwórz je w czacie, żeby je przekazać</string>
+    <string name="forward_nothing">Nie ma czego wysłać</string>
+    <string name="forward_unsafe">Tego pliku nie można udostępnić</string>
+    <string name="forward_setup_first">Najpierw skonfiguruj SinusChat</string>
+    <string name="forward_blocked_row">Zablokowany kontakt</string>
+    <string name="forward_voice_no_groups">Głosówki przekażesz tylko w rozmowie 1:1</string>
+    <string name="forward_fail_generic">nie udało się wysłać</string>
+    <string name="forward_fail_blocked">ten kontakt jest zablokowany</string>
+    <string name="forward_fail_upload">nie udało się wgrać pliku</string>
+    <string name="forward_fail_voice">nie da się pobrać nagrania</string>
+    <string name="forward_fail_key">brak klucza szyfrowania — spróbuj, gdy będziesz online</string>
+    <string name="forward_and">" i "</string>
+
+    <plurals name="forward_photos">
+        <item quantity="one">zdjęcie</item>
+        <item quantity="few">%d zdjęcia</item>
+        <item quantity="many">%d zdjęć</item>
+        <item quantity="other">%d zdjęcia</item>
+    </plurals>
+    <plurals name="forward_videos">
+        <item quantity="one">film</item>
+        <item quantity="few">%d filmy</item>
+        <item quantity="many">%d filmów</item>
+        <item quantity="other">%d filmu</item>
+    </plurals>
+    <plurals name="forward_files">
+        <item quantity="one">plik</item>
+        <item quantity="few">%d pliki</item>
+        <item quantity="many">%d plików</item>
+        <item quantity="other">%d pliku</item>
+    </plurals>
+    <plurals name="forward_voices">
+        <item quantity="one">głosówka</item>
+        <item quantity="few">%d głosówki</item>
+        <item quantity="many">%d głosówek</item>
+        <item quantity="other">%d głosówki</item>
+    </plurals>
+    <plurals name="forward_texts">
+        <item quantity="one">wiadomość</item>
+        <item quantity="few">%d wiadomości</item>
+        <item quantity="many">%d wiadomości</item>
+        <item quantity="other">%d wiadomości</item>
+    </plurals>
+    <plurals name="forward_more_files">
+        <item quantity="one">i jeszcze %d plik</item>
+        <item quantity="few">i jeszcze %d pliki</item>
+        <item quantity="many">i jeszcze %d plików</item>
+        <item quantity="other">i jeszcze %d pliku</item>
+    </plurals>
+    <plurals name="forward_more_texts">
+        <item quantity="one">i jeszcze %d wiadomość</item>
+        <item quantity="few">i jeszcze %d wiadomości</item>
+        <item quantity="many">i jeszcze %d wiadomości</item>
+        <item quantity="other">i jeszcze %d wiadomości</item>
+    </plurals>
+</resources>

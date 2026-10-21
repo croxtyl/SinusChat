@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="?attr/sinuschat_background"
+    android:gravity="center_horizontal"
+    android:fitsSystemWindows="true">
+
+    <View android:layout_width="0dp" android:layout_height="0dp" android:layout_weight="0.3" />
+
+    <pl.sinusoide.sinuschat.ui.IconDrawView
+        android:id="@+id/verify_icon"
+        android:layout_width="match_parent"
+        android:layout_height="196dp"
+        android:layout_marginBottom="8dp"
+        android:importantForAccessibility="no" />
+
+    <TextView
+        android:id="@+id/verify_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/verification_title"
+        android:textColor="?attr/sinuschat_text_primary"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textAlignment="center"
+        android:layout_marginBottom="10dp" />
+
+    <TextView
+        android:id="@+id/verify_subtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="?attr/sinuschat_text_secondary"
+        android:textSize="14sp"
+        android:textAlignment="center"
+        android:lineSpacingExtra="3dp"
+        android:paddingHorizontal="32dp" />
+
+    <LinearLayout
+        android:id="@+id/edit_email_row"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="22dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/setup_email_typo"
+            android:textColor="?attr/sinuschat_text_secondary"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/btn_edit_email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/setup_email_edit"
+            android:textColor="?attr/colorPrimary"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:paddingHorizontal="6dp"
+            android:paddingVertical="8dp"
+            android:layout_marginStart="2dp"
+            android:clickable="true"
+            android:focusable="false"
+            android:background="@drawable/bg_link_ripple" />
+    </LinearLayout>
+
+    <pl.sinusoide.sinuschat.ui.CodeInputView
+        android:id="@+id/code_input"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-10dp"
+        android:layout_marginBottom="2dp" />
+
+    <TextView
+        android:id="@+id/error_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/sinuschat_error"
+        android:textSize="13sp"
+        android:textAlignment="center"
+        android:visibility="invisible"
+        android:paddingHorizontal="32dp"
+        android:layout_marginBottom="4dp" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="16dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/setup_no_code"
+            android:textColor="?attr/sinuschat_text_secondary"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/btn_resend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/setup_resend"
+            android:textColor="?attr/colorPrimary"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:paddingHorizontal="6dp"
+            android:paddingVertical="8dp"
+            android:layout_marginStart="2dp"
+            android:clickable="true"
+            android:focusable="false"
+            android:background="@drawable/bg_link_ripple" />
+    </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/progress"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:visibility="gone"
+        android:indeterminateTint="?attr/colorPrimary" />
+
+    <View android:layout_width="0dp" android:layout_height="0dp" android:layout_weight="1" />
+
+    <Button
+        android:id="@+id/btn_verify"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:text="@string/code_verify_action"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:textColor="#FFFFFF"
+        android:backgroundTint="?attr/colorPrimary"
+        android:layout_marginHorizontal="32dp"
+        android:layout_marginBottom="32dp"
+        style="@style/Widget.Material3.Button" />
+
+</LinearLayout>

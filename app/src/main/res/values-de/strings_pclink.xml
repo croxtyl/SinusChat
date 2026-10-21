@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pclink_title">Verknüpfte Geräte</string>
+    <string name="pclink_sub">Alle verknüpften Geräte</string>
+    <string name="pclink_hero_title">SinusChat auf anderen Geräten</string>
+    <string name="pclink_hero_desc">Ein verknüpftes Gerät zeigt deine Chats und sendet Nachrichten über dieses Handy. Die Schlüssel für die Verschlüsselung bleiben auf dem Handy.</string>
+    <string name="pclink_add">Gerät verbinden</string>
+    <string name="pclink_add_hint">Öffne SinusChat auf dem anderen Gerät und scanne den Code auf seinem Bildschirm.</string>
+    <string name="pclink_section">Geräte</string>
+    <string name="pclink_empty">Noch keine verknüpften Geräte.</string>
+    <string name="pclink_connected">Jetzt verbunden</string>
+    <string name="pclink_last_seen">Zuletzt: %1$s</string>
+    <string name="pclink_default_name">Computer</string>
+    <string name="pclink_default_watch">Uhr</string>
+    <string name="pclink_waiting">Verbinde mit dem Gerät…</string>
+    <string name="pclink_paired">Gerät verbunden</string>
+    <string name="pclink_bad_code">Das ist kein SinusChat-Code von einem anderen Gerät</string>
+    <string name="pclink_no_wifi">Verbinde das Handy mit WLAN. Das andere Gerät muss im selben Netzwerk sein.</string>
+    <string name="pclink_timeout">Verbindung fehlgeschlagen. Prüfe, ob beide Geräte im selben WLAN sind.</string>
+    <string name="pclink_remove_title">Gerät trennen?</string>
+    <string name="pclink_remove_msg">%1$s verliert den Zugriff auf deine Chats. Du kannst es jederzeit erneut verbinden.</string>
+    <string name="pclink_remove">Trennen</string>
+</resources>

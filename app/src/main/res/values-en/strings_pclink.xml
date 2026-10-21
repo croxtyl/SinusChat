@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pclink_title">Linked devices</string>
+    <string name="pclink_sub">All linked devices</string>
+    <string name="pclink_hero_title">SinusChat on other devices</string>
+    <string name="pclink_hero_desc">A linked device shows your chats and sends messages through this phone. Encryption keys stay on the phone.</string>
+    <string name="pclink_add">Link a device</string>
+    <string name="pclink_add_hint">Open SinusChat on the other device and scan the code shown on its screen.</string>
+    <string name="pclink_section">Devices</string>
+    <string name="pclink_empty">No linked devices yet.</string>
+    <string name="pclink_connected">Connected now</string>
+    <string name="pclink_last_seen">Last active: %1$s</string>
+    <string name="pclink_default_name">Computer</string>
+    <string name="pclink_default_watch">Watch</string>
+    <string name="pclink_waiting">Connecting to the device…</string>
+    <string name="pclink_paired">Device linked</string>
+    <string name="pclink_bad_code">This is not a SinusChat device code</string>
+    <string name="pclink_no_wifi">Connect the phone to Wi-Fi. The other device must be on the same network.</string>
+    <string name="pclink_timeout">Could not connect. Check that both devices are on the same Wi-Fi network.</string>
+    <string name="pclink_remove_title">Unlink device?</string>
+    <string name="pclink_remove_msg">%1$s will lose access to your chats. You can link it again at any time.</string>
+    <string name="pclink_remove">Unlink</string>
+</resources>

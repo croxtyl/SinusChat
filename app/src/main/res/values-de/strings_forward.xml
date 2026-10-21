@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="forward_to">Weiterleiten an …</string>
+    <string name="no_chats">Keine Unterhaltungen</string>
+    <string name="forward_title_share">Mit SinusChat senden</string>
+    <string name="forward_search_hint">Unterhaltung suchen</string>
+    <string name="forward_you_forward">Du leitest weiter</string>
+    <string name="forward_you_share">Du teilst</string>
+    <string name="forward_chats_label">Letzte Unterhaltungen</string>
+    <string name="forward_no_results">Keine passende Unterhaltung</string>
+    <string name="forward_comment_hint">Nachricht hinzufügen …</string>
+    <string name="forward_send_cd">Senden</string>
+    <string name="forward_sending">Wird gesendet … %1$d%%</string>
+    <string name="forward_sent_to">Gesendet an: %1$s</string>
+    <string name="forward_sent_many">An %1$d Unterhaltungen gesendet</string>
+    <string name="forward_not_sent">Nicht gesendet:</string>
+    <string name="forward_failed_line">%1$s – %2$s</string>
+    <string name="forward_skipped">%1$s übersprungen – zu groß oder nicht lesbar</string>
+    <string name="forward_too_large">%1$s ist zu groß – das Limit liegt bei 150 MB</string>
+    <string name="forward_limit">Du kannst bis zu %1$d Unterhaltungen auf einmal wählen</string>
+    <string name="forward_view_once">Nachrichten zur Einmalansicht lassen sich nicht weiterleiten</string>
+    <string name="forward_not_downloaded">Einige Anhänge sind nicht heruntergeladen – öffne sie im Chat, um sie weiterzuleiten</string>
+    <string name="forward_nothing">Es gibt nichts zu senden</string>
+    <string name="forward_unsafe">Diese Datei kann nicht geteilt werden</string>
+    <string name="forward_setup_first">Richte zuerst SinusChat ein</string>
+    <string name="forward_blocked_row">Blockierter Kontakt</string>
+    <string name="forward_voice_no_groups">Sprachnachrichten kannst du nur in 1:1-Unterhaltungen weiterleiten</string>
+    <string name="forward_fail_generic">Senden fehlgeschlagen</string>
+    <string name="forward_fail_blocked">dieser Kontakt ist blockiert</string>
+    <string name="forward_fail_upload">die Datei konnte nicht hochgeladen werden</string>
+    <string name="forward_fail_voice">die Aufnahme konnte nicht heruntergeladen werden</string>
+    <string name="forward_fail_key">kein Verschlüsselungsschlüssel – versuche es, wenn du online bist</string>
+    <string name="forward_and">" und "</string>
+    <plurals name="forward_photos">
+        <item quantity="one">ein Foto</item>
+        <item quantity="other">%d Fotos</item>
+    </plurals>
+    <plurals name="forward_videos">
+        <item quantity="one">ein Video</item>
+        <item quantity="other">%d Videos</item>
+    </plurals>
+    <plurals name="forward_files">
+        <item quantity="one">eine Datei</item>
+        <item quantity="other">%d Dateien</item>
+    </plurals>
+    <plurals name="forward_voices">
+        <item quantity="one">eine Sprachnachricht</item>
+        <item quantity="other">%d Sprachnachrichten</item>
+    </plurals>
+    <plurals name="forward_texts">
+        <item quantity="one">eine Nachricht</item>
+        <item quantity="other">%d Nachrichten</item>
+    </plurals>
+    <plurals name="forward_more_files">
+        <item quantity="one">und noch %d Datei</item>
+        <item quantity="other">und noch %d Dateien</item>
+    </plurals>
+    <plurals name="forward_more_texts">
+        <item quantity="one">und noch %d Nachricht</item>
+        <item quantity="other">und noch %d Nachrichten</item>
+    </plurals>
+</resources>

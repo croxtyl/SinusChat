@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tor_route_title">Route über Tor</string>
+    <string name="tor_route_sub">Sieh, über welche Länder die Verbindung läuft</string>
+    <string name="tor_route_section">Deine Route</string>
+    <string name="tor_route_security">Sicherheit</string>
+    <string name="tor_route_off">Schalte Tor in den Datenschutzeinstellungen ein, um die Route zu sehen.</string>
+    <string name="tor_route_loading">Route wird geprüft…</string>
+    <string name="tor_route_none">Tor baut die Route noch auf. Versuch es gleich noch einmal.</string>
+    <string name="tor_route_you">Dein Handy</string>
+    <string name="tor_route_guard">Eingangsknoten</string>
+    <string name="tor_route_middle">Mittlerer Knoten</string>
+    <string name="tor_route_exit">Ausgangsknoten</string>
+    <string name="tor_route_server">SinusChat-Server</string>
+    <string name="tor_route_unknown_country">Unbekanntes Land</string>
+    <string name="tor_route_same">Zwei Knoten dieser Route sind im selben Land: %1$s.</string>
+    <string name="tor_route_new">Neue Route</string>
+    <string name="tor_route_new_done">Neue Route wird aufgebaut…</string>
+    <string name="tor_route_distinct">Dasselbe Land vermeiden</string>
+    <string name="tor_route_distinct_desc">Die Route führt nicht zweimal durch dasselbe Land. Ein zusätzlicher Schutz: Der Aufbau kann etwas länger dauern, und deine Routen ähneln denen anderer Tor-Nutzer etwas weniger.</string>
+    <string name="tor_route_footer">Tor behält den Eingangsknoten absichtlich einige Monate, weil das die Verfolgung erschwert. Mittel- und Ausgangsknoten wechseln regelmäßig. Die Länder der Knoten stammen aus der IPFire-Location-Datenbank (CC BY-SA 4.0), die mit Tor ausgeliefert wird.</string>
+    <string name="tor_startup_progress">Verbinde mit dem Tor-Netzwerk… %1$d%%</string>
+</resources>

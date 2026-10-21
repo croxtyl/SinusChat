@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/new_chat_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="?attr/sinuschat_background">
+
+    <View
+        android:id="@+id/new_chat_status_spacer"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="?attr/sinuschat_surface" />
+
+    <LinearLayout
+        android:id="@+id/new_chat_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="56dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="4dp"
+        android:background="?attr/sinuschat_surface"
+        android:elevation="2dp">
+
+        <ImageButton
+            android:id="@+id/btn_new_chat_back"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_back"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:tint="?attr/sinuschat_text_primary"
+            android:padding="10dp"
+            android:contentDescription="@string/back" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginStart="8dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/new_chat_title"
+                android:textColor="?attr/sinuschat_text_primary"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/select_contact"
+                android:textColor="?attr/sinuschat_text_secondary"
+                android:textSize="12sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?attr/sinuschat_border" />
+
+    <ScrollView
+        android:id="@+id/new_chat_scroll_content"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/contacts_on_sinuschat_title"
+                android:textColor="?attr/colorPrimary"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:letterSpacing="0.08"
+                android:paddingHorizontal="20dp"
+                android:paddingTop="20dp"
+                android:paddingBottom="8dp" />
+
+            <ProgressBar
+                android:id="@+id/progress"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center"
+                android:visibility="gone"
+                android:indeterminateTint="?attr/colorPrimary"
+                android:layout_marginVertical="20dp" />
+
+            <TextView
+                android:id="@+id/empty_contacts_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="?attr/sinuschat_text_muted"
+                android:textSize="14sp"
+                android:textAlignment="center"
+                android:paddingHorizontal="32dp"
+                android:paddingVertical="20dp"
+                android:visibility="gone"
+                android:lineSpacingExtra="4dp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/contacts_recycler"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?attr/sinuschat_border"
+                android:layout_marginTop="8dp" />
+
+            <LinearLayout
+                android:id="@+id/manual_section"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingHorizontal="20dp"
+                android:paddingTop="20dp"
+                android:visibility="visible">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/add_by_number_title"
+                    android:textColor="?attr/colorPrimary"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:letterSpacing="0.08"
+                    android:layout_marginBottom="12dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="12dp">
+                    <EditText
+                        android:id="@+id/new_chat_prefix"
+                        android:layout_width="72dp"
+                        android:layout_height="48dp"
+                        android:inputType="phone"
+                        android:text="+48"
+                        android:textColor="?attr/sinuschat_text_primary"
+                        android:textSize="16sp"
+                        android:textAlignment="center"
+                        android:background="@drawable/bg_input_signal"
+                        android:padding="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:maxLength="5"
+                        android:importantForAutofill="no" />
+                    <EditText
+                        android:id="@+id/new_chat_phone"
+                        android:layout_width="0dp"
+                        android:layout_height="48dp"
+                        android:layout_weight="1"
+                        android:inputType="phone"
+                        android:hint="@string/phone_hint"
+                        android:textColor="?attr/sinuschat_text_primary"
+                        android:textColorHint="?attr/sinuschat_text_muted"
+                        android:textSize="16sp"
+                        android:background="@drawable/bg_input_signal"
+                        android:paddingHorizontal="14dp"
+                        android:maxLength="500"
+                        android:importantForAutofill="no" />
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/btn_search_user"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:text="@string/search"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:textColor="#FFFFFF"
+                    android:backgroundTint="?attr/colorPrimary"
+                    style="@style/Widget.Material3.Button" />
+
+                <TextView
+                    android:id="@+id/result_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="?attr/sinuschat_text_secondary"
+                    android:textSize="14sp"
+                    android:textAlignment="center"
+                    android:visibility="gone"
+                    android:layout_marginTop="16dp"
+                    android:lineSpacingExtra="4dp" />
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/result_card"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="24dp"
+                    android:visibility="gone"
+                    app:cardBackgroundColor="?attr/sinuschat_surface_elevated"
+                    app:cardCornerRadius="16dp"
+                    app:strokeColor="?attr/sinuschat_border"
+                    app:strokeWidth="1dp"
+                    app:cardElevation="0dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="20dp"
+                        android:gravity="center_horizontal">
+
+                        <FrameLayout
+                            android:layout_width="64dp"
+                            android:layout_height="64dp"
+                            android:layout_marginBottom="12dp">
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/bg_avatar_large" />
+                            <TextView
+                                android:id="@+id/result_contact_avatar"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:text="?"
+                                android:textColor="#FFFFFF"
+                                android:textSize="26sp"
+                                android:textStyle="bold"
+                                android:gravity="center" />
+                            <ImageView
+                                android:id="@+id/result_contact_avatar_image"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:scaleType="centerCrop"
+                                android:visibility="gone"
+                                android:background="@drawable/bg_avatar_circle"
+                                android:clipToOutline="true"
+                                android:outlineProvider="background"
+                                android:contentDescription="Avatar" />
+                        </FrameLayout>
+
+                        <TextView
+                            android:id="@+id/result_contact_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="?attr/sinuschat_text_primary"
+                            android:textSize="17sp"
+                            android:textStyle="bold"
+                            android:layout_marginBottom="4dp" />
+
+                        <TextView
+                            android:id="@+id/result_contact_status"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="?attr/sinuschat_text_secondary"
+                            android:textSize="12sp"
+                            android:layout_marginBottom="14dp" />
+
+                        <Button
+                            android:id="@+id/btn_start_chat"
+                            android:layout_width="match_parent"
+                            android:layout_height="46dp"
+                            android:text="@string/write"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            android:textColor="#FFFFFF"
+                            android:backgroundTint="?attr/colorPrimary"
+                            style="@style/Widget.Material3.Button" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <View
+        android:id="@+id/new_chat_nav_spacer"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="?attr/sinuschat_background" />
+</LinearLayout>

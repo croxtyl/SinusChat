@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pclink_title">Połączone urządzenia</string>
+    <string name="pclink_sub">Wszystkie połączone urządzenia</string>
+    <string name="pclink_hero_title">SinusChat na innych urządzeniach</string>
+    <string name="pclink_hero_desc">Połączone urządzenie pokazuje Twoje rozmowy i wysyła wiadomości przez ten telefon. Klucze szyfrowania zostają na telefonie.</string>
+    <string name="pclink_add">Połącz urządzenie</string>
+    <string name="pclink_add_hint">Otwórz SinusChat na drugim urządzeniu i zeskanuj kod widoczny na jego ekranie.</string>
+    <string name="pclink_section">Urządzenia</string>
+    <string name="pclink_empty">Nie masz jeszcze połączonych urządzeń.</string>
+    <string name="pclink_connected">Połączony teraz</string>
+    <string name="pclink_last_seen">Ostatnio: %1$s</string>
+    <string name="pclink_default_name">Komputer</string>
+    <string name="pclink_default_watch">Zegarek</string>
+    <string name="pclink_waiting">Łączę z urządzeniem…</string>
+    <string name="pclink_paired">Urządzenie połączone</string>
+    <string name="pclink_bad_code">To nie jest kod SinusChat z innego urządzenia</string>
+    <string name="pclink_no_wifi">Połącz telefon z Wi-Fi. Drugie urządzenie musi być w tej samej sieci.</string>
+    <string name="pclink_timeout">Nie udało się połączyć. Sprawdź, czy oba urządzenia są w tej samej sieci Wi-Fi.</string>
+    <string name="pclink_remove_title">Odłączyć urządzenie?</string>
+    <string name="pclink_remove_msg">%1$s straci dostęp do Twoich rozmów. Połączenie możesz odnowić w każdej chwili.</string>
+    <string name="pclink_remove">Odłącz</string>
+</resources>

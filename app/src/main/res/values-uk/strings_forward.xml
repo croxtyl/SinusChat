@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="forward_to">Переслати до…</string>
+    <string name="no_chats">Немає розмов</string>
+    <string name="forward_title_share">Надіслати через SinusChat</string>
+    <string name="forward_search_hint">Пошук розмови</string>
+    <string name="forward_you_forward">Ви пересилаєте</string>
+    <string name="forward_you_share">Ви ділитеся</string>
+    <string name="forward_chats_label">Останні розмови</string>
+    <string name="forward_no_results">Такої розмови немає</string>
+    <string name="forward_comment_hint">Додати повідомлення…</string>
+    <string name="forward_send_cd">Надіслати</string>
+    <string name="forward_sending">Надсилання… %1$d%%</string>
+    <string name="forward_sent_to">Надіслано: %1$s</string>
+    <string name="forward_sent_many">Надіслано в розмови: %1$d</string>
+    <string name="forward_not_sent">Не надіслано:</string>
+    <string name="forward_failed_line">%1$s — %2$s</string>
+    <string name="forward_skipped">Пропущено %1$s — завеликий або не читається</string>
+    <string name="forward_too_large">%1$s завеликий — ліміт 150 МБ</string>
+    <string name="forward_limit">Одночасно можна вибрати до %1$d розмов</string>
+    <string name="forward_view_once">Одноразові повідомлення не можна пересилати</string>
+    <string name="forward_not_downloaded">Частину вкладень не завантажено — відкрийте їх у чаті, щоб переслати</string>
+    <string name="forward_nothing">Нічого надсилати</string>
+    <string name="forward_unsafe">Цим файлом не можна поділитися</string>
+    <string name="forward_setup_first">Спершу налаштуйте SinusChat</string>
+    <string name="forward_blocked_row">Заблокований контакт</string>
+    <string name="forward_voice_no_groups">Голосові можна пересилати лише в розмову 1:1</string>
+    <string name="forward_fail_generic">не вдалося надіслати</string>
+    <string name="forward_fail_blocked">цей контакт заблоковано</string>
+    <string name="forward_fail_upload">не вдалося завантажити файл</string>
+    <string name="forward_fail_voice">не вдається отримати запис</string>
+    <string name="forward_fail_key">немає ключа шифрування — спробуйте, коли будете в мережі</string>
+    <string name="forward_and">" і "</string>
+    <plurals name="forward_photos">
+        <item quantity="one">%d фото</item>
+        <item quantity="few">%d фото</item>
+        <item quantity="many">%d фото</item>
+        <item quantity="other">%d фото</item>
+    </plurals>
+    <plurals name="forward_videos">
+        <item quantity="one">%d відео</item>
+        <item quantity="few">%d відео</item>
+        <item quantity="many">%d відео</item>
+        <item quantity="other">%d відео</item>
+    </plurals>
+    <plurals name="forward_files">
+        <item quantity="one">%d файл</item>
+        <item quantity="few">%d файли</item>
+        <item quantity="many">%d файлів</item>
+        <item quantity="other">%d файлу</item>
+    </plurals>
+    <plurals name="forward_voices">
+        <item quantity="one">%d голосове</item>
+        <item quantity="few">%d голосові</item>
+        <item quantity="many">%d голосових</item>
+        <item quantity="other">%d голосового</item>
+    </plurals>
+    <plurals name="forward_texts">
+        <item quantity="one">%d повідомлення</item>
+        <item quantity="few">%d повідомлення</item>
+        <item quantity="many">%d повідомлень</item>
+        <item quantity="other">%d повідомлення</item>
+    </plurals>
+    <plurals name="forward_more_files">
+        <item quantity="one">і ще %d файл</item>
+        <item quantity="few">і ще %d файли</item>
+        <item quantity="many">і ще %d файлів</item>
+        <item quantity="other">і ще %d файлу</item>
+    </plurals>
+    <plurals name="forward_more_texts">
+        <item quantity="one">і ще %d повідомлення</item>
+        <item quantity="few">і ще %d повідомлення</item>
+        <item quantity="many">і ще %d повідомлень</item>
+        <item quantity="other">і ще %d повідомлення</item>
+    </plurals>
+</resources>

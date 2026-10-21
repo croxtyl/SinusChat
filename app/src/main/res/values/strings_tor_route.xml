@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tor_route_title">Trasa przez Tor</string>
+    <string name="tor_route_sub">Zobacz, przez jakie kraje idzie połączenie</string>
+    <string name="tor_route_section">Twoja trasa</string>
+    <string name="tor_route_security">Bezpieczeństwo</string>
+    <string name="tor_route_off">Włącz Tora w ustawieniach prywatności, żeby zobaczyć trasę.</string>
+    <string name="tor_route_loading">Sprawdzam trasę…</string>
+    <string name="tor_route_none">Tor jeszcze buduje trasę. Spróbuj za chwilę.</string>
+    <string name="tor_route_you">Twój telefon</string>
+    <string name="tor_route_guard">Węzeł wejściowy</string>
+    <string name="tor_route_middle">Węzeł środkowy</string>
+    <string name="tor_route_exit">Węzeł wyjściowy</string>
+    <string name="tor_route_server">Serwer SinusChat</string>
+    <string name="tor_route_unknown_country">Nieznany kraj</string>
+    <string name="tor_route_same">Dwa węzły tej trasy są w tym samym kraju: %1$s.</string>
+    <string name="tor_route_new">Nowa trasa</string>
+    <string name="tor_route_new_done">Buduję nową trasę…</string>
+    <string name="tor_route_distinct">Unikaj tego samego kraju</string>
+    <string name="tor_route_distinct_desc">Trasa nie przejdzie dwa razy przez ten sam kraj. Dodatkowe zabezpieczenie: połączenie może budować się trochę dłużej, a Twoje trasy będą trochę mniej podobne do tras innych użytkowników Tora.</string>
+    <string name="tor_route_footer">Węzeł wejściowy Tor celowo zostawia na kilka miesięcy, bo to utrudnia namierzenie. Środek i wyjście zmieniają się regularnie. Kraje węzłów pochodzą z bazy IPFire Location (CC BY-SA 4.0) dołączanej do Tora.</string>
+    <string name="tor_startup_progress">Łączę z siecią Tor… %1$d%%</string>
+</resources>

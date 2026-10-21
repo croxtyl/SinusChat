@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="sinuschat_primary">#5288C1</color>
+
+    <color name="sinuschat_error">#E74C3C</color>
+    <color name="sinuschat_success">#2ECC71</color>
+
+    <color name="sinuschat_background">#0E1621</color>
+
+    <color name="sinuschat_bubble_mine">#2B5278</color>
+
+    <color name="sinuschat_text_disabled">#3E4B5E</color>
+    <color name="sinuschat_text_on_primary">#FFFFFF</color>
+
+    <color name="sinuschat_ripple">#1AFFFFFF</color>
+
+    <color name="fixed_black">#000000</color>
+    <color name="fixed_dark_bg">#0B0B0B</color>
+    <color name="fixed_white">#FFFFFFFF</color>
+</resources>

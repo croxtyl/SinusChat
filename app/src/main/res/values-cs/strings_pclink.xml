@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pclink_title">Propojená zařízení</string>
+    <string name="pclink_sub">Všechna propojená zařízení</string>
+    <string name="pclink_hero_title">SinusChat na dalších zařízeních</string>
+    <string name="pclink_hero_desc">Propojené zařízení zobrazuje vaše konverzace a odesílá zprávy přes tento telefon. Šifrovací klíče zůstávají v telefonu.</string>
+    <string name="pclink_add">Propojit zařízení</string>
+    <string name="pclink_add_hint">Otevřete SinusChat na druhém zařízení a naskenujte kód zobrazený na jeho obrazovce.</string>
+    <string name="pclink_section">Zařízení</string>
+    <string name="pclink_empty">Zatím nemáte žádná propojená zařízení.</string>
+    <string name="pclink_connected">Právě připojen</string>
+    <string name="pclink_last_seen">Naposledy: %1$s</string>
+    <string name="pclink_default_name">Počítač</string>
+    <string name="pclink_default_watch">Hodinky</string>
+    <string name="pclink_waiting">Připojuji se k zařízení…</string>
+    <string name="pclink_paired">Zařízení propojeno</string>
+    <string name="pclink_bad_code">Toto není kód SinusChat z jiného zařízení</string>
+    <string name="pclink_no_wifi">Připojte telefon k Wi-Fi. Druhé zařízení musí být ve stejné síti.</string>
+    <string name="pclink_timeout">Připojení se nezdařilo. Zkontrolujte, zda jsou obě zařízení ve stejné síti Wi-Fi.</string>
+    <string name="pclink_remove_title">Odpojit zařízení?</string>
+    <string name="pclink_remove_msg">%1$s ztratí přístup k vašim konverzacím. Propojení můžete kdykoli obnovit.</string>
+    <string name="pclink_remove">Odpojit</string>
+</resources>

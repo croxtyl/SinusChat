@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="sinuschat_background" format="color" />
+    <attr name="sinuschat_surface" format="color" />
+    <attr name="sinuschat_surface_variant" format="color" />
+    <attr name="sinuschat_surface_elevated" format="color" />
+    <attr name="sinuschat_border" format="color" />
+    <attr name="sinuschat_bubble_other" format="color" />
+    <attr name="sinuschat_text_primary" format="color" />
+    <attr name="sinuschat_text_secondary" format="color" />
+    <attr name="sinuschat_text_muted" format="color" />
+    <attr name="sinuschat_background_solid" format="color" />
+    <attr name="sinuschat_sheet" format="color" />
+</resources>

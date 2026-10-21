@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="forward_to">Forward to…</string>
+    <string name="no_chats">No chats</string>
+
+    <string name="forward_title_share">Send with SinusChat</string>
+    <string name="forward_search_hint">Search chats</string>
+    <string name="forward_you_forward">Forwarding</string>
+    <string name="forward_you_share">Sharing</string>
+    <string name="forward_chats_label">Recent chats</string>
+    <string name="forward_no_results">No matching chats</string>
+    <string name="forward_comment_hint">Add a message…</string>
+    <string name="forward_send_cd">Send</string>
+    <string name="forward_sending">Sending… %1$d%%</string>
+    <string name="forward_sent_to">Sent to %1$s</string>
+    <string name="forward_sent_many">Sent to %1$d chats</string>
+    <string name="forward_not_sent">Not sent:</string>
+    <string name="forward_failed_line">%1$s — %2$s</string>
+    <string name="forward_skipped">Skipped %1$s — too large or unreadable</string>
+    <string name="forward_too_large">%1$s is too large — the limit is 150 MB</string>
+    <string name="forward_limit">You can pick up to %1$d chats at once</string>
+    <string name="forward_view_once">View-once messages can\'t be forwarded</string>
+    <string name="forward_not_downloaded">Some attachments aren\'t downloaded — open them in the chat to forward them</string>
+    <string name="forward_nothing">Nothing to send</string>
+    <string name="forward_unsafe">This file can\'t be shared</string>
+    <string name="forward_setup_first">Set up SinusChat first</string>
+    <string name="forward_blocked_row">Blocked contact</string>
+    <string name="forward_voice_no_groups">Voice messages can only be forwarded to 1:1 chats</string>
+    <string name="forward_fail_generic">couldn\'t send</string>
+    <string name="forward_fail_blocked">this contact is blocked</string>
+    <string name="forward_fail_upload">couldn\'t upload the file</string>
+    <string name="forward_fail_voice">couldn\'t download the recording</string>
+    <string name="forward_fail_key">no encryption key — try again when you\'re online</string>
+    <string name="forward_and">" and "</string>
+
+    <plurals name="forward_photos">
+        <item quantity="one">photo</item>
+        <item quantity="other">%d photos</item>
+    </plurals>
+    <plurals name="forward_videos">
+        <item quantity="one">video</item>
+        <item quantity="other">%d videos</item>
+    </plurals>
+    <plurals name="forward_files">
+        <item quantity="one">file</item>
+        <item quantity="other">%d files</item>
+    </plurals>
+    <plurals name="forward_voices">
+        <item quantity="one">voice message</item>
+        <item quantity="other">%d voice messages</item>
+    </plurals>
+    <plurals name="forward_texts">
+        <item quantity="one">message</item>
+        <item quantity="other">%d messages</item>
+    </plurals>
+    <plurals name="forward_more_files">
+        <item quantity="one">and %d more file</item>
+        <item quantity="other">and %d more files</item>
+    </plurals>
+    <plurals name="forward_more_texts">
+        <item quantity="one">and %d more message</item>
+        <item quantity="other">and %d more messages</item>
+    </plurals>
+</resources>

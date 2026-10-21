@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="20dp"
+    android:background="@drawable/bg_bottom_sheet_modern">
+
+    <View
+        android:layout_width="40dp"
+        android:layout_height="4dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="16dp"
+        android:background="?attr/sinuschat_border"
+        android:alpha="0.5" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/edit_message"
+        android:textColor="?attr/sinuschat_text_primary"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="12dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingStart="12dp"
+        android:paddingVertical="8dp"
+        android:background="#1A5288C1"
+        android:layout_marginBottom="16dp">
+        <View
+            android:layout_width="2dp"
+            android:layout_height="match_parent"
+            android:background="?attr/colorPrimary"
+            android:layout_marginEnd="10dp" />
+        <TextView
+            android:id="@+id/tv_original_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="?attr/sinuschat_text_secondary"
+            android:textSize="14sp"
+            android:maxLines="2"
+            android:ellipsize="end" />
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/et_edit_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/chat_input_hint"
+        android:textColor="?attr/sinuschat_text_primary"
+        android:textColorHint="?attr/sinuschat_text_muted"
+        android:textSize="16sp"
+        android:background="@drawable/bg_chat_input"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="12dp"
+        android:minHeight="48dp"
+        android:maxLines="6"
+        android:inputType="textMultiLine|textCapSentences"
+        android:layout_marginBottom="20dp"
+        android:importantForAutofill="no" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="end">
+
+        <Button
+            android:id="@+id/btn_edit_cancel"
+            style="@style/Widget.Material3.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/cancel"
+            android:textColor="?attr/sinuschat_text_secondary" />
+
+        <Button
+            android:id="@+id/btn_edit_save"
+            style="@style/Widget.Material3.Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@string/save"
+            android:backgroundTint="?attr/colorPrimary"
+            android:textColor="#FFFFFF" />
+    </LinearLayout>
+</LinearLayout>

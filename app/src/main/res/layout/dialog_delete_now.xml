@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="22dp"
+    android:background="?attr/sinuschat_surface">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="16dp">
+
+        <ImageView
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@drawable/ic_danger"
+            android:tint="@color/sinuschat_error"
+            android:layout_marginEnd="14dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/delete_account_now_q"
+            android:textColor="?attr/sinuschat_text_primary"
+            android:textSize="17sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/delete_account_now_desc"
+        android:textColor="?attr/sinuschat_text_secondary"
+        android:textSize="13sp"
+        android:lineSpacingMultiplier="1.3"
+        android:layout_marginBottom="20dp" />
+
+    <pl.sinusoide.sinuschat.ui.HoldButton
+        android:id="@+id/btn_hold_now"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:text="@string/hold_to_delete_now"
+        android:textAllCaps="false"
+        android:textColor="@color/sinuschat_error"
+        android:textSize="15sp"
+        android:background="@drawable/bg_hold_button" />
+
+    <Button
+        android:id="@+id/btn_cancel_now"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/action_cancel"
+        android:textAllCaps="false"
+        android:textSize="15sp"
+        android:layout_marginTop="10dp"
+        style="?attr/materialButtonOutlinedStyle" />
+</LinearLayout>

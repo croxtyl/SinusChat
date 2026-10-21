@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tor_route_title">Trasa přes Tor</string>
+    <string name="tor_route_sub">Podívejte se, přes které země spojení vede</string>
+    <string name="tor_route_section">Vaše trasa</string>
+    <string name="tor_route_security">Zabezpečení</string>
+    <string name="tor_route_off">Zapněte Tor v nastavení soukromí, abyste viděli trasu.</string>
+    <string name="tor_route_loading">Zjišťuji trasu…</string>
+    <string name="tor_route_none">Tor ještě sestavuje trasu. Zkuste to za chvíli.</string>
+    <string name="tor_route_you">Váš telefon</string>
+    <string name="tor_route_guard">Vstupní uzel</string>
+    <string name="tor_route_middle">Prostřední uzel</string>
+    <string name="tor_route_exit">Výstupní uzel</string>
+    <string name="tor_route_server">Server SinusChat</string>
+    <string name="tor_route_unknown_country">Neznámá země</string>
+    <string name="tor_route_same">Dva uzly této trasy jsou ve stejné zemi: %1$s.</string>
+    <string name="tor_route_new">Nová trasa</string>
+    <string name="tor_route_new_done">Sestavuji novou trasu…</string>
+    <string name="tor_route_distinct">Vyhýbat se stejné zemi</string>
+    <string name="tor_route_distinct_desc">Trasa nepůjde dvakrát přes stejnou zemi. Dodatečná ochrana: připojení se může sestavovat o něco déle a vaše trasy budou o něco méně podobné trasám ostatních uživatelů Toru.</string>
+    <string name="tor_route_footer">Tor si vstupní uzel záměrně ponechává několik měsíců, protože to ztěžuje vaše vystopování. Prostřední a výstupní uzel se pravidelně mění. Země uzlů pocházejí z databáze IPFire Location (CC BY-SA 4.0), která je součástí Toru.</string>
+    <string name="tor_startup_progress">Připojuji se k síti Tor… %1$d%%</string>
+</resources>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pclink_title">Пов’язані пристрої</string>
+    <string name="pclink_sub">Усі пов’язані пристрої</string>
+    <string name="pclink_hero_title">SinusChat на інших пристроях</string>
+    <string name="pclink_hero_desc">Пов’язаний пристрій показує ваші чати й надсилає повідомлення через цей телефон. Ключі шифрування залишаються на телефоні.</string>
+    <string name="pclink_add">Під’єднати пристрій</string>
+    <string name="pclink_add_hint">Відкрийте SinusChat на іншому пристрої та скануйте код на його екрані.</string>
+    <string name="pclink_section">Пристрої</string>
+    <string name="pclink_empty">Ще немає пов’язаних пристроїв.</string>
+    <string name="pclink_connected">Під\'єднано зараз</string>
+    <string name="pclink_last_seen">Востаннє: %1$s</string>
+    <string name="pclink_default_name">Комп\'ютер</string>
+    <string name="pclink_default_watch">Годинник</string>
+    <string name="pclink_waiting">Під’єднуюся до пристрою…</string>
+    <string name="pclink_paired">Пристрій під’єднано</string>
+    <string name="pclink_bad_code">Це не код SinusChat з іншого пристрою</string>
+    <string name="pclink_no_wifi">Під’єднайте телефон до Wi-Fi. Інший пристрій має бути в тій самій мережі.</string>
+    <string name="pclink_timeout">Не вдалося під’єднатися. Перевірте, чи обидва пристрої в тій самій мережі Wi-Fi.</string>
+    <string name="pclink_remove_title">Від’єднати пристрій?</string>
+    <string name="pclink_remove_msg">%1$s втратить доступ до ваших чатів. Ви можете під’єднати його знову будь-коли.</string>
+    <string name="pclink_remove">Від\'єднати</string>
+</resources>

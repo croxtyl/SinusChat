@@ -1,0 +1,175 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <style name="Base.Theme.SinusChat" parent="Theme.Material3.Dark.NoActionBar">
+        <item name="android:windowBackground">?attr/sinuschat_background</item>
+        <item name="android:textColor">?attr/sinuschat_text_primary</item>
+        <item name="colorPrimary">@color/sinuschat_primary</item>
+        <item name="colorSurface">?attr/sinuschat_surface</item>
+        <item name="colorOnSurface">?attr/sinuschat_text_primary</item>
+        <item name="colorSurfaceVariant">?attr/sinuschat_surface_variant</item>
+        <item name="colorOnSurfaceVariant">?attr/sinuschat_text_secondary</item>
+        <item name="colorError">@color/sinuschat_error</item>
+        <item name="colorOnPrimary">@color/sinuschat_text_on_primary</item>
+        <item name="colorOnBackground">?attr/sinuschat_text_primary</item>
+
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="27">false</item>
+        <item name="android:enforceNavigationBarContrast" tools:targetApi="29">false</item>
+        <item name="android:enforceStatusBarContrast" tools:targetApi="29">false</item>
+
+        <item name="materialAlertDialogTheme">@style/Theme.SinusChat.Dialog</item>
+        <item name="bottomNavigationStyle">@style/SinusChat_BottomNav</item>
+
+        <item name="sinuschat_background">#0E1621</item>
+        <item name="sinuschat_background_solid">#0E1621</item>
+        <item name="sinuschat_surface">#17212B</item>
+        <item name="sinuschat_surface_variant">#162431</item>
+        <item name="sinuschat_surface_elevated">#1D2A38</item>
+        <item name="sinuschat_sheet">#162431</item>
+        <item name="sinuschat_border">#233240</item>
+        <item name="sinuschat_bubble_other">#182533</item>
+        <item name="sinuschat_text_primary">#F5F5F5</item>
+        <item name="sinuschat_text_secondary">#7F91A4</item>
+        <item name="sinuschat_text_muted">#5E6D7E</item>
+    </style>
+
+    <style name="SinusChat_BottomNav" parent="Widget.Material3.BottomNavigationView">
+        <item name="android:background">?attr/sinuschat_surface</item>
+        <item name="itemIconTint">@color/bottom_nav_colors</item>
+        <item name="itemTextColor">@color/bottom_nav_colors</item>
+        <item name="labelVisibilityMode">labeled</item>
+    </style>
+
+    <style name="Theme.SinusChat.Dialog" parent="ThemeOverlay.Material3.MaterialAlertDialog">
+        <item name="colorSurface">?attr/sinuschat_sheet</item>
+        <item name="colorOnSurface">?attr/sinuschat_text_primary</item>
+        <item name="android:textColorPrimary">?attr/sinuschat_text_primary</item>
+        <item name="android:textColorSecondary">?attr/sinuschat_text_secondary</item>
+        <item name="shapeAppearanceLargeComponent">@style/ShapeAppearance.SINUSCHAT_Dialog</item>
+        <item name="dialogCornerRadius">28dp</item>
+        <item name="android:windowAnimationStyle">@style/SinusChat_DialogAnimation</item>
+    </style>
+
+    <style name="SinusChat_DialogAnimation" parent="android:Animation.Dialog">
+        <item name="android:windowEnterAnimation">@anim/anim_dialog_enter</item>
+        <item name="android:windowExitAnimation">@anim/anim_dialog_exit</item>
+    </style>
+
+    <style name="ShapeAppearance.SINUSCHAT_Dialog" parent="ShapeAppearance.Material3.LargeComponent">
+        <item name="cornerSize">28dp</item>
+    </style>
+
+    <style name="Theme.SinusChat.BottomSheet" parent="ThemeOverlay.Material3.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/SinusChat_BottomSheetStyle</item>
+        <item name="android:navigationBarColor">?attr/sinuschat_sheet</item>
+    </style>
+    <style name="Theme.SinusChat.BottomSheet.Input">
+        <item name="android:windowSoftInputMode">adjustResize</item>
+    </style>
+    <style name="SinusChat_BottomSheetStyle" parent="Widget.Material3.BottomSheet.Modal">
+        <item name="backgroundTint">?attr/sinuschat_sheet</item>
+    </style>
+
+    <style name="Theme.SinusChat.Launch" parent="Base.Theme.SinusChat">
+        <item name="android:windowBackground">@color/sinuschat_background</item>
+        <item name="android:statusBarColor">@color/sinuschat_background</item>
+        <item name="android:navigationBarColor">@color/sinuschat_background</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="27">true</item>
+        <item name="android:windowSplashScreenBackground" tools:targetApi="31">@color/sinuschat_background</item>
+        <item name="android:windowSplashScreenAnimatedIcon" tools:targetApi="31">@drawable/ic_transparent</item>
+    </style>
+
+    <style name="Theme.SinusChat" parent="Base.Theme.SinusChat">
+        <item name="sinuschat_background">#0E1621</item>
+        <item name="sinuschat_background_solid">#0E1621</item>
+        <item name="sinuschat_surface">#17212B</item>
+        <item name="sinuschat_surface_variant">#162431</item>
+        <item name="sinuschat_surface_elevated">#1D2A38</item>
+        <item name="sinuschat_sheet">#162431</item>
+        <item name="sinuschat_border">#233240</item>
+        <item name="sinuschat_bubble_other">#182533</item>
+        <item name="sinuschat_text_primary">#F5F5F5</item>
+        <item name="sinuschat_text_secondary">#7F91A4</item>
+        <item name="sinuschat_text_muted">#5E6D7E</item>
+    </style>
+
+    <style name="Theme.SinusChat.Flow" parent="Base.Theme.SinusChat">
+        <item name="android:windowBackground">@color/flow_backdrop_base</item>
+        <item name="colorSurface">?attr/sinuschat_sheet</item>
+        <item name="sinuschat_background">#00000000</item>
+        <item name="sinuschat_background_solid">#04121A</item>
+        <item name="sinuschat_surface">#12FFFFFF</item>
+        <item name="sinuschat_surface_variant">#1AFFFFFF</item>
+        <item name="sinuschat_surface_elevated">#17FFFFFF</item>
+        <item name="sinuschat_sheet">#F707202B</item>
+        <item name="sinuschat_border">#2BFFFFFF</item>
+        <item name="sinuschat_bubble_other">#21FFFFFF</item>
+        <item name="sinuschat_text_primary">#FFFFFF</item>
+        <item name="sinuschat_text_secondary">#B8FFFFFF</item>
+        <item name="sinuschat_text_muted">#85FFFFFF</item>
+    </style>
+
+    <style name="Theme.SinusChat.Light" parent="Theme.Material3.Light.NoActionBar">
+        <item name="android:windowBackground">?attr/sinuschat_background</item>
+        <item name="android:textColor">?attr/sinuschat_text_primary</item>
+        <item name="colorPrimary">@color/sinuschat_primary</item>
+        <item name="colorSurface">?attr/sinuschat_surface</item>
+        <item name="colorOnSurface">?attr/sinuschat_text_primary</item>
+        <item name="colorSurfaceVariant">?attr/sinuschat_surface_variant</item>
+        <item name="colorOnSurfaceVariant">?attr/sinuschat_text_secondary</item>
+        <item name="colorError">@color/sinuschat_error</item>
+        <item name="colorOnPrimary">@color/sinuschat_text_on_primary</item>
+        <item name="colorOnBackground">?attr/sinuschat_text_primary</item>
+
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="27">true</item>
+        <item name="android:enforceNavigationBarContrast" tools:targetApi="29">false</item>
+        <item name="android:enforceStatusBarContrast" tools:targetApi="29">false</item>
+
+        <item name="materialAlertDialogTheme">@style/Theme.SinusChat.Dialog</item>
+        <item name="bottomNavigationStyle">@style/SinusChat_BottomNav</item>
+
+        <item name="sinuschat_background">#D6DDE3</item>
+        <item name="sinuschat_background_solid">#D6DDE3</item>
+        <item name="sinuschat_surface">#FFFFFF</item>
+        <item name="sinuschat_surface_variant">#E9EEF2</item>
+        <item name="sinuschat_surface_elevated">#FFFFFF</item>
+        <item name="sinuschat_sheet">#E9EEF2</item>
+        <item name="sinuschat_border">#C5CDD4</item>
+        <item name="sinuschat_bubble_other">#FFFFFF</item>
+        <item name="sinuschat_text_primary">#0E1621</item>
+        <item name="sinuschat_text_secondary">#475569</item>
+        <item name="sinuschat_text_muted">#64748B</item>
+    </style>
+
+    <style name="Theme.SinusChat.Dynamic" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="android:windowBackground">?android:attr/colorBackground</item>
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
+
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:enforceNavigationBarContrast" tools:targetApi="29">false</item>
+        <item name="android:enforceStatusBarContrast" tools:targetApi="29">false</item>
+
+        <item name="materialAlertDialogTheme">@style/Theme.SinusChat.Dialog</item>
+        <item name="bottomNavigationStyle">@style/SinusChat_BottomNav</item>
+
+        <item name="sinuschat_background">?android:attr/colorBackground</item>
+        <item name="sinuschat_background_solid">?android:attr/colorBackground</item>
+        <item name="sinuschat_surface">?attr/colorSurfaceContainer</item>
+        <item name="sinuschat_surface_variant">?attr/colorSurfaceContainerHighest</item>
+        <item name="sinuschat_surface_elevated">?attr/colorSurfaceContainerHigh</item>
+        <item name="sinuschat_sheet">?attr/colorSurfaceContainerLow</item>
+        <item name="sinuschat_border">?attr/colorOutlineVariant</item>
+        <item name="sinuschat_bubble_other">?attr/colorSecondaryContainer</item>
+        <item name="sinuschat_text_primary">?attr/colorOnBackground</item>
+        <item name="sinuschat_text_secondary">?attr/colorOnSurfaceVariant</item>
+        <item name="sinuschat_text_muted">?attr/colorOutline</item>
+    </style>
+
+</resources>

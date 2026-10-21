@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="?attr/sinuschat_background"
+    android:gravity="center_horizontal"
+    android:fitsSystemWindows="true">
+
+    <View android:layout_width="0dp" android:layout_height="0dp" android:layout_weight="0.3" />
+
+    <TextView
+        android:id="@+id/profile_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/your_profile_title"
+        android:textColor="?attr/sinuschat_text_primary"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="8dp" />
+
+    <TextView
+        android:id="@+id/profile_subtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/add_photo_name_subtitle"
+        android:textColor="?attr/sinuschat_text_secondary"
+        android:textSize="14sp"
+        android:textAlignment="center"
+        android:paddingHorizontal="32dp"
+        android:layout_marginBottom="32dp" />
+
+    <FrameLayout
+        android:id="@+id/avatar_container"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginBottom="12dp"
+        android:foreground="?android:attr/selectableItemBackgroundBorderless">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_avatar_large" />
+
+        <ImageView
+            android:id="@+id/avatar_letter"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop" />
+
+        <ImageView
+            android:id="@+id/avatar_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:visibility="gone"
+            android:background="@drawable/bg_avatar_circle"
+            android:clipToOutline="true"
+            android:outlineProvider="background"
+            android:contentDescription="Avatar" />
+
+        <FrameLayout
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="bottom|end"
+            android:background="@drawable/bg_send_btn">
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_add"
+                android:tint="#FFFFFF"
+                android:contentDescription="Dodaj" />
+        </FrameLayout>
+
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/btn_add_photo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/add_photo_label"
+        android:textColor="?attr/colorPrimary"
+        android:textSize="14sp"
+        android:padding="8dp"
+        android:layout_marginBottom="24dp" />
+
+    <EditText
+        android:id="@+id/input_display_name"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:inputType="textPersonName"
+        android:hint="@string/your_name_hint"
+        android:textColor="?attr/sinuschat_text_primary"
+        android:textColorHint="?attr/sinuschat_text_muted"
+        android:textSize="17sp"
+        android:textAlignment="center"
+        android:background="@drawable/bg_input_signal"
+        android:padding="12dp"
+        android:maxLength="30"
+        android:layout_marginHorizontal="48dp"
+        android:importantForAutofill="no" />
+
+    <ProgressBar
+        android:id="@+id/progress"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:visibility="gone"
+        android:indeterminateTint="?attr/colorPrimary"
+        android:layout_marginTop="8dp" />
+
+    <View android:layout_width="0dp" android:layout_height="0dp" android:layout_weight="1" />
+
+    <Button
+        android:id="@+id/btn_finish"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:text="@string/next"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:textColor="#FFFFFF"
+        android:backgroundTint="?attr/colorPrimary"
+        android:enabled="false"
+        android:layout_marginHorizontal="32dp"
+        android:layout_marginBottom="32dp"
+        style="@style/Widget.Material3.Button" />
+
+</LinearLayout>

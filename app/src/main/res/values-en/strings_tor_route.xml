@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tor_route_title">Tor route</string>
+    <string name="tor_route_sub">See which countries your connection goes through</string>
+    <string name="tor_route_section">Your route</string>
+    <string name="tor_route_security">Security</string>
+    <string name="tor_route_off">Turn on Tor in privacy settings to see the route.</string>
+    <string name="tor_route_loading">Checking the route…</string>
+    <string name="tor_route_none">Tor is still building a route. Try again in a moment.</string>
+    <string name="tor_route_you">Your phone</string>
+    <string name="tor_route_guard">Entry node</string>
+    <string name="tor_route_middle">Middle node</string>
+    <string name="tor_route_exit">Exit node</string>
+    <string name="tor_route_server">SinusChat server</string>
+    <string name="tor_route_unknown_country">Unknown country</string>
+    <string name="tor_route_same">Two nodes on this route are in the same country: %1$s.</string>
+    <string name="tor_route_new">New route</string>
+    <string name="tor_route_new_done">Building a new route…</string>
+    <string name="tor_route_distinct">Avoid the same country</string>
+    <string name="tor_route_distinct_desc">The route won\'t pass through the same country twice. An extra safeguard: connecting may take a bit longer, and your routes will look a little less like those of other Tor users.</string>
+    <string name="tor_route_footer">Tor deliberately keeps the entry node for a few months because that makes you harder to track. The middle and exit change regularly. Node countries come from the IPFire Location database (CC BY-SA 4.0) shipped with Tor.</string>
+    <string name="tor_startup_progress">Connecting to the Tor network… %1$d%%</string>
+</resources>

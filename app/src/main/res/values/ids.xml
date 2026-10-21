@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="flow_glass_keep" type="id" />
+    <item name="flow_glass_seen" type="id" />
+    <item name="insets_watch" type="id" />
+    <item name="flow_check" type="id" />
+</resources>
