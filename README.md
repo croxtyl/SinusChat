@@ -30,6 +30,10 @@ fcm.senderId=
 
 `local.properties`, `google-services.json`, klucze do podpisywania i zbudowane pliki są w `.gitignore` i nigdy nie trafiają do repozytorium.
 
+## Serwer
+
+Kod serwera, z którym łączy się aplikacja, jest w osobnym repozytorium: [SinusChat-server](https://github.com/sinusoidetechnology/SinusChat-server).
+
 ## Licencja
 
 AGPL-3.0 z warunkami dodatkowymi z sekcji 7 (nazwy i znaki, oznaczenie zmienionej wersji, autorstwo, poparcie) — pełny tekst w [LICENSE](LICENSE), warunki w [NOTICE.md](NOTICE.md). Zmieniona wersja musi mieć własną nazwę, ikonę i identyfikator aplikacji.
