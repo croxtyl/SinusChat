@@ -1,0 +1,227 @@
+name: Release APK
+
+on:
+ push:
+  branches:
+   - main
+  paths:
+   - "app/build.gradle.kts"
+   - "build.gradle.kts"
+ workflow_dispatch:
+
+permissions:
+ contents: write
+
+jobs:
+ build-and-release:
+  name: Build & Release APK
+  runs-on: ubuntu-latest
+
+  steps:
+   - name: Checkout repository
+     uses: actions/checkout@v4
+     with:
+      fetch-depth: 0
+
+   - name: Check if version changed in build.gradle.kts
+     id: check_version
+     run: |
+      NEW_VERSION=$(grep -E 'versionName\s*=' app/build.gradle.kts | head -n 1 | sed -E 's/.*versionName\s*=\s*"([^"]+)".*/\1/')
+      NEW_VERSION_CODE=$(grep -E 'versionCode\s*=' app/build.gradle.kts | head -n 1 | sed -E 's/.*versionCode\s*=\s*([0-9]+).*/\1/')
+
+      if [ -z "$NEW_VERSION" ]; then
+        echo "::error::Could not find versionName in app/build.gradle.kts"
+        exit 1
+      fi
+
+      TAG_NAME="v${NEW_VERSION#v}"
+      echo "Detected versionName: $NEW_VERSION"
+      echo "Detected versionCode: $NEW_VERSION_CODE"
+      echo "Target tag: $TAG_NAME"
+
+      if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+        echo "Workflow triggered manually via workflow_dispatch. Proceeding with release."
+        echo "changed=true" >> "$GITHUB_OUTPUT"
+        echo "version=$NEW_VERSION" >> "$GITHUB_OUTPUT"
+        echo "version_code=$NEW_VERSION_CODE" >> "$GITHUB_OUTPUT"
+        echo "tag_name=$TAG_NAME" >> "$GITHUB_OUTPUT"
+        exit 0
+      fi
+
+      BEFORE_SHA="${{ github.event.before }}"
+      OLD_VERSION=""
+      OLD_VERSION_CODE=""
+
+      if [ -n "$BEFORE_SHA" ] && [ "$BEFORE_SHA" != "0000000000000000000000000000000000000000" ] && git cat-file -e "$BEFORE_SHA^{commit}" 2>/dev/null; then
+        OLD_VERSION=$(git show "$BEFORE_SHA:app/build.gradle.kts" 2>/dev/null | grep -E 'versionName\s*=' | head -n 1 | sed -E 's/.*versionName\s*=\s*"([^"]+)".*/\1/' || true)
+        OLD_VERSION_CODE=$(git show "$BEFORE_SHA:app/build.gradle.kts" 2>/dev/null | grep -E 'versionCode\s*=' | head -n 1 | sed -E 's/.*versionCode\s*=\s*([0-9]+).*/\1/' || true)
+        echo "Previous commit ($BEFORE_SHA) versionName: '$OLD_VERSION', versionCode: '$OLD_VERSION_CODE'"
+      elif git rev-parse --verify HEAD~1 >/dev/null 2>&1; then
+        OLD_VERSION=$(git show "HEAD~1:app/build.gradle.kts" 2>/dev/null | grep -E 'versionName\s*=' | head -n 1 | sed -E 's/.*versionName\s*=\s*"([^"]+)".*/\1/' || true)
+        OLD_VERSION_CODE=$(git show "HEAD~1:app/build.gradle.kts" 2>/dev/null | grep -E 'versionCode\s*=' | head -n 1 | sed -E 's/.*versionCode\s*=\s*([0-9]+).*/\1/' || true)
+        echo "HEAD~1 commit versionName: '$OLD_VERSION', versionCode: '$OLD_VERSION_CODE'"
+      else
+        echo "No previous commit found in history."
+      fi
+
+      if [ "$OLD_VERSION" != "$NEW_VERSION" ] || [ "$OLD_VERSION_CODE" != "$NEW_VERSION_CODE" ]; then
+        echo "Version changed (Name: '$OLD_VERSION' -> '$NEW_VERSION', Code: '$OLD_VERSION_CODE' -> '$NEW_VERSION_CODE')."
+        echo "changed=true" >> "$GITHUB_OUTPUT"
+        echo "version=$NEW_VERSION" >> "$GITHUB_OUTPUT"
+        echo "version_code=$NEW_VERSION_CODE" >> "$GITHUB_OUTPUT"
+        echo "tag_name=$TAG_NAME" >> "$GITHUB_OUTPUT"
+      else
+        echo "Version was not changed (current: $NEW_VERSION, code: $NEW_VERSION_CODE). Skipping release."
+        echo "changed=false" >> "$GITHUB_OUTPUT"
+      fi
+
+   - name: Set up JDK 21
+     if: steps.check_version.outputs.changed == 'true'
+     uses: actions/setup-java@v4
+     with:
+      distribution: "temurin"
+      java-version: "21"
+
+   - name: Accept Android SDK Licenses
+     if: steps.check_version.outputs.changed == 'true'
+     run: |
+      if [ -n "$ANDROID_HOME" ] && [ -x "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" ]; then
+        yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses || true
+      fi
+
+   - name: Setup Gradle
+     if: steps.check_version.outputs.changed == 'true'
+     uses: gradle/actions/setup-gradle@v4
+
+   - name: Make gradlew executable
+     if: steps.check_version.outputs.changed == 'true'
+     run: chmod +x gradlew
+
+   - name: Prepare local.properties
+     if: steps.check_version.outputs.changed == 'true'
+     run: |
+      touch local.properties
+      if [ -n "${{ secrets.FCM_API_KEY }}" ]; then
+        echo "fcm.apiKey=${{ secrets.FCM_API_KEY }}" >> local.properties
+        echo "fcm.appId=${{ secrets.FCM_APP_ID }}" >> local.properties
+        echo "fcm.projectId=${{ secrets.FCM_PROJECT_ID }}" >> local.properties
+        echo "fcm.senderId=${{ secrets.FCM_SENDER_ID }}" >> local.properties
+      fi
+
+   - name: Setup Keystore Environment
+     if: steps.check_version.outputs.changed == 'true'
+     env:
+      KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+      KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+      KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+      KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+     run: |
+      if [ -n "$KEYSTORE_BASE64" ]; then
+        echo "Decoding release upload keystore..."
+        echo "$KEYSTORE_BASE64" | base64 --decode > /tmp/upload.keystore
+        echo "KEYSTORE_PATH=/tmp/upload.keystore" >> "$GITHUB_ENV"
+        echo "KEYSTORE_PASSWORD=$KEYSTORE_PASSWORD" >> "$GITHUB_ENV"
+        echo "KEY_ALIAS=$KEY_ALIAS" >> "$GITHUB_ENV"
+        echo "KEY_PASSWORD=$KEY_PASSWORD" >> "$GITHUB_ENV"
+      else
+        echo "No KEYSTORE_BASE64 secret provided. Gradle will build unsigned packages."
+      fi
+
+   - name: Build Android App Bundle (AAB)
+     if: steps.check_version.outputs.changed == 'true'
+     run: ./gradlew bundleRelease --no-daemon --stacktrace
+
+   - name: Upload to Google Play & Fetch Signed Universal APK
+     if: steps.check_version.outputs.changed == 'true' && (secrets.PLAY_SERVICE_ACCOUNT_JSON != '' || secrets.PLAY_SERVICE_ACCOUNT_BASE64 != '')
+     id: play_store_apk
+     env:
+      SERVICE_ACCOUNT_JSON: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}
+      SERVICE_ACCOUNT_BASE64: ${{ secrets.PLAY_SERVICE_ACCOUNT_BASE64 }}
+      VERSION_NAME: ${{ steps.check_version.outputs.version }}
+      VERSION_CODE: ${{ steps.check_version.outputs.version_code }}
+      PACKAGE_NAME: "pl.sinusoide.sinuschat"
+      PLAY_TRACK: "internal"
+     run: |
+      echo "Installing Google Play Developer API client..."
+      npm install --no-save googleapis
+
+      mkdir -p /tmp/play_creds
+      if [ -n "$SERVICE_ACCOUNT_JSON" ]; then
+        echo "$SERVICE_ACCOUNT_JSON" > /tmp/play_creds/service-account.json
+      else
+        echo "$SERVICE_ACCOUNT_BASE64" | base64 --decode > /tmp/play_creds/service-account.json
+      fi
+
+      AAB_FILE="app/build/outputs/bundle/release/app-release.aab"
+      OUTPUT_APK="app/build/outputs/apk/release/SinusChat-${VERSION_NAME}.apk"
+
+      PLAY_SERVICE_ACCOUNT_PATH="/tmp/play_creds/service-account.json" \
+      AAB_PATH="$AAB_FILE" \
+      OUTPUT_APK="$OUTPUT_APK" \
+      node .github/scripts/fetch_google_play_apk.js
+
+      rm -rf /tmp/play_creds
+      echo "apk_path=$OUTPUT_APK" >> "$GITHUB_OUTPUT"
+      echo "source=google_play" >> "$GITHUB_OUTPUT"
+
+   - name: Fallback - Build Release APK locally
+     if: steps.check_version.outputs.changed == 'true' && steps.play_store_apk.outputs.apk_path == ''
+     id: fallback_apk
+     env:
+      VERSION_NAME: ${{ steps.check_version.outputs.version }}
+     run: |
+      echo "::warning::PLAY_SERVICE_ACCOUNT_JSON was not provided. Building APK directly via Gradle."
+      echo "::warning::Notice: This APK will not be signed with Google Play App Signing key."
+      ./gradlew assembleRelease --no-daemon --stacktrace
+      ORIGINAL_APK=$(find app/build/outputs/apk/release -type f -name "*.apk" ! -name "*unaligned*" | head -n 1)
+      if [ -z "$ORIGINAL_APK" ]; then
+        echo "::error::No APK file found in app/build/outputs/apk/release"
+        exit 1
+      fi
+      FINAL_APK="app/build/outputs/apk/release/SinusChat-${VERSION_NAME}.apk"
+      cp "$ORIGINAL_APK" "$FINAL_APK"
+      echo "apk_path=$FINAL_APK" >> "$GITHUB_OUTPUT"
+      echo "source=local" >> "$GITHUB_OUTPUT"
+
+   - name: Resolve Release Artifacts
+     if: steps.check_version.outputs.changed == 'true'
+     id: artifacts
+     run: |
+      if [ -n "${{ steps.play_store_apk.outputs.apk_path }}" ]; then
+        echo "apk_path=${{ steps.play_store_apk.outputs.apk_path }}" >> "$GITHUB_OUTPUT"
+        echo "signing_note=Podpisany oficjalnym certyfikatem Google Play App Signing (zgodny z wersją ze Sklepu Play)." >> "$GITHUB_OUTPUT"
+      else
+        echo "apk_path=${{ steps.fallback_apk.outputs.apk_path }}" >> "$GITHUB_OUTPUT"
+        echo "signing_note=Podpisany lokalnym kluczem wydawcy (brak zgodności aktualizacji z Google Play Store)." >> "$GITHUB_OUTPUT"
+      fi
+
+   - name: Cleanup Keystore
+     if: always()
+     run: rm -f /tmp/upload.keystore
+
+   - name: Upload APK as Workflow Artifact
+     if: steps.check_version.outputs.changed == 'true'
+     uses: actions/upload-artifact@v4
+     with:
+      name: SinusChat-${{ steps.check_version.outputs.version }}-apk
+      path: ${{ steps.artifacts.outputs.apk_path }}
+      retention-days: 14
+
+   - name: Create GitHub Release
+     if: steps.check_version.outputs.changed == 'true'
+     uses: softprops/action-gh-release@v2
+     with:
+      tag_name: ${{ steps.check_version.outputs.tag_name }}
+      name: SinusChat ${{ steps.check_version.outputs.tag_name }}
+      body: |
+       Wydanie **SinusChat ${{ steps.check_version.outputs.tag_name }}** (kod wersji: `${{ steps.check_version.outputs.version_code }}`)
+
+       - **Wersja:** `${{ steps.check_version.outputs.version }}`
+       - **Status podpisu:** ${{ steps.artifacts.outputs.signing_note }}
+       - Automatyczna publikacja po aktualizacji wersji w `build.gradle.kts`.
+      generate_release_notes: true
+      draft: false
+      prerelease: false
+      files: ${{ steps.artifacts.outputs.apk_path }}
+     env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
