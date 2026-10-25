@@ -1444,6 +1444,12 @@
     <string name="theme_selected">Wybrany: %1$s</string>
     <string name="theme_desc_dark">Ciemnoniebieskie tło, które nie męczy oczu wieczorem i oszczędza baterię na ekranach OLED.</string>
     <string name="theme_desc_light">Jasne tło i białe dymki — dobrze czytelne w słońcu i przy jasnym świetle.</string>
+    <string name="theme_retro">Stare 2000</string>
+    <string name="theme_desc_retro">Jak komunikatory z końca lat 2000: jasne okna, niebieskie paski z gradientem i kanciaste dymki.</string>
+    <string name="retro_me">Ja</string>
+    <string name="retro_online">Dostępni</string>
+    <string name="retro_groups">Grupy</string>
+    <string name="retro_offline">Niedostępni</string>
     <string name="theme_desc_dynamic">Kolory dobierane z tapety telefonu. Tryb jasny lub ciemny zmienia się razem z ustawieniem systemu.</string>
     <string name="theme_flow_drop" translatable="false">Sinusoide</string>
     <string name="theme_desc_flow">Granat i cyjan jak na stronie sinusoide.pl, a na nim szklane karty. Pływający pasek nawigacji z soczewką: przytrzymaj zaznaczenie i przeciągnij — ikony i napisy załamują się jak w prawdziwym szkle.</string>
@@ -2092,4 +2098,10 @@
     <string name="walkie_failed">Nie udało się włączyć walkie-talkie. Sprawdź, czy jesteś w sieci Wi‑Fi.</string>
     <string name="walkie_ring_title">Walkie-talkie: %1$s</string>
     <string name="walkie_ring_text">Ktoś z grupy włączył walkie-talkie w tej samej sieci Wi‑Fi</string>
+    <string name="retro_pin_new">Nowy PIN:</string>
+    <string name="retro_pin_repeat">Potwierdź nowy PIN:</string>
+    <string name="retro_login_hint">Aby rozpocząć, wpisz swój PIN</string>
+    <string name="retro_pin_label" translatable="false">PIN:</string>
+    <string name="retro_ok" translatable="false">OK</string>
+    <string name="draft_prefix">Wersja robocza:</string>
 </resources>

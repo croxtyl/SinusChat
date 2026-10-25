@@ -286,6 +286,7 @@ object LockManager {
     fun wipeAllChats(ctx: Context) {
         pl.sinusoide.sinuschat.messenger.PendingLink.clear()
         pl.sinusoide.sinuschat.util.ChatBubbles.clear(ctx)
+        pl.sinusoide.sinuschat.util.Drafts.wipe(ctx)
         try {
             SetupActivity.resetSetup(ctx)
 

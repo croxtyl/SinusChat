@@ -56,7 +56,8 @@ class ThemePickerView(
             Triple(ThemeManager.THEME_FLOW, R.string.theme_flow_drop, flowPalette()),
             Triple(ThemeManager.THEME_DEFAULT, R.string.current_dark, darkPalette()),
             Triple(ThemeManager.THEME_LIGHT, R.string.light, lightPalette()),
-            Triple(ThemeManager.THEME_DYNAMIC, R.string.dynamic_color, dynamicPalette())
+            Triple(ThemeManager.THEME_DYNAMIC, R.string.dynamic_color, dynamicPalette()),
+            Triple(ThemeManager.THEME_RETRO, R.string.theme_retro, retroPalette())
         )
         options.chunked(2).forEachIndexed { r, pair ->
             val tiles = LinearLayout(context).apply { orientation = HORIZONTAL }
@@ -68,6 +69,9 @@ class ThemePickerView(
                         if (i > 0) marginStart = (12 * dp).toInt()
                     })
             }
+            if (pair.size == 1) tiles.addView(View(context), LayoutParams(0, 1, 1f).apply {
+                marginStart = (12 * dp).toInt()
+            })
             addView(tiles, LayoutParams(-1, -2).apply {
                 if (r > 0) topMargin = (12 * dp).toInt()
             })
@@ -77,6 +81,7 @@ class ThemePickerView(
             ThemeManager.THEME_FLOW -> R.string.theme_flow_drop to R.string.theme_desc_flow
             ThemeManager.THEME_LIGHT -> R.string.light to R.string.theme_desc_light
             ThemeManager.THEME_DYNAMIC -> R.string.dynamic_color to R.string.theme_desc_dynamic
+            ThemeManager.THEME_RETRO -> R.string.theme_retro to R.string.theme_desc_retro
             else -> R.string.current_dark to R.string.theme_desc_dark
         }
         addView(LinearLayout(context).apply {
@@ -233,6 +238,11 @@ class ThemePickerView(
         background = 0xFFD6DDE3.toInt(), surface = Color.WHITE,
         bubbleOther = Color.WHITE, bubbleMine = ContextCompat.getColor(context, R.color.sinuschat_bubble_mine),
         text = 0xFF0E1621.toInt(), accent = 0xFF5288C1.toInt())
+
+    private fun retroPalette() = Palette(
+        background = RetroUi.CHROME, surface = RetroUi.TITLE_MID,
+        bubbleOther = RetroUi.ROW_OTHER, bubbleMine = RetroUi.ROW_MINE,
+        text = RetroUi.NAVY, accent = RetroUi.TITLE_MID)
 
     private fun dynamicPalette(): Palette {
         val base = ContextThemeWrapper(context, R.style.Theme_SinusChat_Dynamic)

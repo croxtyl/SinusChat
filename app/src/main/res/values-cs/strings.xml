@@ -1392,6 +1392,12 @@
     <string name="theme_selected">Vybráno: %1$s</string>
     <string name="theme_desc_dark">Tmavě modré pozadí, které večer neunavuje oči a na displejích OLED šetří baterii.</string>
     <string name="theme_desc_light">Světlé pozadí a bílé bubliny — dobře čitelné na slunci i při jasném světle.</string>
+    <string name="theme_retro">Pozdní 2000</string>
+    <string name="theme_desc_retro">Jako komunikátory z konce nultých let: světlá okna, modré lišty s přechodem a hranaté bubliny.</string>
+    <string name="retro_me">Já</string>
+    <string name="retro_online">Dostupní</string>
+    <string name="retro_groups">Skupiny</string>
+    <string name="retro_offline">Nedostupní</string>
     <string name="theme_desc_dynamic">Barvy podle tapety telefonu. Světlý nebo tmavý režim se mění spolu s nastavením systému.</string>
     <string name="theme_desc_flow">Námořnická modrá a azurová jako na webu sinusoide.pl a na nich skleněné karty. Plovoucí navigační lišta s čočkou: podržte výběr a táhněte — ikony a popisky se lámou jako ve skutečném skle.</string>
     <string name="theme_dynamic_unavailable">Motiv z barev systému vyžaduje Android 12 nebo novější.</string>
@@ -2038,4 +2044,8 @@
     <string name="walkie_failed">Vysílačku se nepodařilo zapnout. Zkontrolujte, zda jste v síti Wi‑Fi.</string>
     <string name="walkie_ring_title">Vysílačka: %1$s</string>
     <string name="walkie_ring_text">Někdo ze skupiny zapnul vysílačku ve stejné síti Wi‑Fi</string>
+    <string name="retro_pin_new">Nový PIN:</string>
+    <string name="retro_pin_repeat">Potvrďte nový PIN:</string>
+    <string name="retro_login_hint">Pro začátek zadejte svůj PIN</string>
+    <string name="draft_prefix">Koncept:</string>
 </resources>

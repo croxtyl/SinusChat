@@ -21,8 +21,8 @@ android {
         applicationId = "pl.sinusoide.sinuschat"
         minSdk = 26
         targetSdk = 36
-        versionCode = 21
-        versionName = "1.0"
+        versionCode = 22
+        versionName = "1.1"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         buildConfigField("String", "FCM_API_KEY", "\"${fcmProp("fcm.apiKey")}\"")
@@ -50,6 +50,7 @@ android {
     buildTypes {
         release {
             isMinifyEnabled = true
+            isShrinkResources = true
             if (project.hasProperty("r8test")) {
                 signingConfig = signingConfigs.getByName("debug")
             } else if (signingConfigs.findByName("release") != null) {

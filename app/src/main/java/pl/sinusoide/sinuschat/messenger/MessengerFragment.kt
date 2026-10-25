@@ -107,6 +107,8 @@ class MessengerFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val header = view.findViewById<View>(R.id.messenger_header)
+        if (pl.sinusoide.sinuschat.util.ThemeManager.isRetro(requireContext()))
+            pl.sinusoide.sinuschat.ui.RetroUi.styleTitleBar(header)
         ViewCompat.setOnApplyWindowInsetsListener(header) { v, insets ->
             v.updatePadding(top = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top)
             insets
@@ -154,6 +156,19 @@ class MessengerFragment : Fragment() {
         )
         adapter.pins = { context?.let { pl.sinusoide.sinuschat.util.ChatPins.all(it) } ?: emptyMap() }
         recycler.layoutManager = LinearLayoutManager(requireContext())
+        if (pl.sinusoide.sinuschat.util.ThemeManager.isRetro(requireContext())) {
+            adapter.retro = true
+            val d = resources.displayMetrics.density
+            recycler.background = android.graphics.drawable.GradientDrawable().apply {
+                setColor(pl.sinusoide.sinuschat.ui.RetroUi.PANEL)
+                setStroke(d.toInt().coerceAtLeast(1), pl.sinusoide.sinuschat.ui.RetroUi.FRAME)
+            }
+            (recycler.layoutParams as? ViewGroup.MarginLayoutParams)?.let {
+                it.setMargins((6 * d).toInt(), (6 * d).toInt(), (6 * d).toInt(), 0)
+                recycler.layoutParams = it
+            }
+            recycler.setPadding(0, 0, 0, recycler.paddingBottom)
+        }
         recycler.adapter = adapter
         listLens = pl.sinusoide.sinuschat.ui.FlowLens.attach(recycler, emptyList())
         adapter.registerAdapterDataObserver(object : androidx.recyclerview.widget.RecyclerView.AdapterDataObserver() {

@@ -25,9 +25,11 @@ class ConversationListAdapter(
     private val myPhoneHash: String,
     private val onClick: (ConversationItem) -> Unit,
     private val onLongClick: ((ConversationItem, View) -> Unit)? = null
-) : ListAdapter<ConversationItem, ConversationListAdapter.VH>(DIFF) {
+) : ListAdapter<ConversationItem, RecyclerView.ViewHolder>(DIFF) {
 
     companion object {
+        private const val RETRO_PREFIX = "retro:"
+        private const val TYPE_HEADER = 1
         private val DIFF = object : DiffUtil.ItemCallback<ConversationItem>() {
             override fun areItemsTheSame(a: ConversationItem, b: ConversationItem) = a.id == b.id
             override fun areContentsTheSame(a: ConversationItem, b: ConversationItem) = a == b
@@ -66,8 +68,34 @@ class ConversationListAdapter(
         }
     }
 
+    var retro = false
+
+    private val collapsed = mutableSetOf<String>()
+
+    private fun header(key: String, count: Int) = ConversationItem(
+        id = RETRO_PREFIX + key, otherUserHash = "", otherUserName = key,
+        lastMessage = count.toString(), lastMessageAt = pl.sinusoide.sinuschat.util.Timestamp(0, 0))
+
+    private fun grouped(items: List<ConversationItem>): List<ConversationItem> {
+        val online = items.filter { !it.isGroup && it.isOnline }
+        val groups = items.filter { it.isGroup }
+        val offline = items.filter { !it.isGroup && !it.isOnline }
+        val out = mutableListOf<ConversationItem>()
+        for ((key, part) in listOf("on" to online, "groups" to groups, "off" to offline)) {
+            if (part.isEmpty()) continue
+            out += header(key, part.size)
+            if (key !in collapsed) out += part
+        }
+        return out
+    }
+
+    private fun toggle(key: String) {
+        if (!collapsed.remove(key)) collapsed += key
+        super.submitList(applyQuery(allItems))
+    }
+
     private fun applyQuery(items: List<ConversationItem>): List<ConversationItem> {
-        if (query.isEmpty()) return items
+        if (query.isEmpty()) return if (retro) grouped(items) else items
         val q = fold(query)
         return items.filter { fold(it.otherUserName).contains(q) }
     }
@@ -111,11 +139,64 @@ class ConversationListAdapter(
         colorsResolved = true
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH {
+    inner class HeaderVH(view: android.widget.LinearLayout) : RecyclerView.ViewHolder(view) {
+        val label: TextView = view.getChildAt(0) as TextView
+        val count: TextView = view.getChildAt(1) as TextView
+    }
+
+    override fun getItemViewType(position: Int): Int =
+        if (getItem(position).id.startsWith(RETRO_PREFIX)) TYPE_HEADER else 0
+
+    private fun headerView(parent: ViewGroup): android.widget.LinearLayout {
+        val ctx = parent.context
+        val d = ctx.resources.displayMetrics.density
+        val retroUi = pl.sinusoide.sinuschat.ui.RetroUi
+        return android.widget.LinearLayout(ctx).apply {
+            orientation = android.widget.LinearLayout.HORIZONTAL
+            gravity = android.view.Gravity.CENTER_VERTICAL
+            layoutParams = RecyclerView.LayoutParams(-1, (30 * d).toInt())
+            setPadding((10 * d).toInt(), 0, (12 * d).toInt(), 0)
+            background = android.graphics.drawable.LayerDrawable(arrayOf(
+                android.graphics.drawable.ColorDrawable(retroUi.FRAME),
+                android.graphics.drawable.ColorDrawable(Color.WHITE),
+                android.graphics.drawable.ColorDrawable(retroUi.SECTION))).apply {
+                setLayerInset(1, 0, 0, 0, d.toInt())
+                setLayerInset(2, 0, d.toInt(), 0, d.toInt())
+            }
+            addView(TextView(ctx).apply {
+                textSize = 13.5f; setTextColor(retroUi.NAVY); setTypeface(null, Typeface.BOLD)
+            }, android.widget.LinearLayout.LayoutParams(0, -2, 1f))
+            addView(TextView(ctx).apply {
+                textSize = 13f; setTextColor(retroUi.NAVY); setTypeface(null, Typeface.BOLD)
+            })
+        }
+    }
+
+    private fun statusDot(ctx: android.content.Context, color: Int): android.graphics.drawable.Drawable {
+        val s = (11 * ctx.resources.displayMetrics.density).toInt()
+        return android.graphics.drawable.GradientDrawable().apply {
+            shape = android.graphics.drawable.GradientDrawable.OVAL
+            setColor(color)
+            setStroke(ctx.resources.displayMetrics.density.toInt().coerceAtLeast(1), 0x40000000)
+            setSize(s, s)
+            setBounds(0, 0, s, s)
+        }
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         resolveColors(parent.context)
+        if (viewType == TYPE_HEADER) return HeaderVH(headerView(parent))
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_conversation_e2e, parent, false)
         val vh = VH(view)
         val d = parent.resources.displayMetrics.density
+        if (retro) {
+            view.findViewById<View>(R.id.avatar_container)?.visibility = View.GONE
+            view.setPadding((12 * d).toInt(), (6 * d).toInt(), (12 * d).toInt(), (6 * d).toInt())
+            vh.name.compoundDrawablePadding = (8 * d).toInt()
+            vh.name.textSize = 15f
+            vh.lastMsg.textSize = 13f
+            vh.lastMsg.setPadding((19 * d).toInt(), 0, 0, 0)
+        }
         vh.onlineIndicator?.background = android.graphics.drawable.GradientDrawable().apply {
             shape = android.graphics.drawable.GradientDrawable.OVAL
             setColor(Color.parseColor("#3FB97A"))
@@ -124,9 +205,22 @@ class ConversationListAdapter(
         return vh
     }
 
-    override fun onBindViewHolder(holder: VH, position: Int) {
+    override fun onBindViewHolder(vh: RecyclerView.ViewHolder, position: Int) {
         val item = getItem(position)
-        val ctx = holder.itemView.context
+        val ctx = vh.itemView.context
+        if (vh is HeaderVH) {
+            val key = item.id.removePrefix(RETRO_PREFIX)
+            val label = ctx.getString(when (key) {
+                "on" -> R.string.retro_online
+                "groups" -> R.string.retro_groups
+                else -> R.string.retro_offline
+            })
+            vh.label.text = (if (key in collapsed) "+  " else "−  ") + label
+            vh.count.text = item.lastMessage
+            vh.itemView.setOnClickListener { toggle(key) }
+            return
+        }
+        val holder = vh as VH
 
         val color = AvatarHelper.getContactColor(ctx, item.otherUserHash)
         val img = holder.avatarImage
@@ -160,6 +254,16 @@ class ConversationListAdapter(
         }
 
         holder.name.text = item.otherUserName
+        if (retro) {
+            val cut = BlockList.isCutOff(ctx, item.otherUserHash)
+            val dot = when {
+                item.isGroup -> 0xFFE6B422.toInt()
+                item.isOnline && !cut -> 0xFF3CB043.toInt()
+                else -> 0xFFC0392B.toInt()
+            }
+            holder.name.setCompoundDrawables(statusDot(ctx, dot), null, null, null)
+            holder.onlineIndicator?.visibility = View.GONE
+        }
         holder.onlineIndicator?.visibility = if (item.isOnline && !item.isGroup && !BlockList.isCutOff(ctx, item.otherUserHash)) View.VISIBLE else View.GONE
 
         val hidePreview = PrivacySettings.shouldHidePreview(ctx)
@@ -171,7 +275,16 @@ class ConversationListAdapter(
         } else {
             holder.lockIcon.visibility = View.GONE
             
-            holder.lastMsg.text = item.lastMessage
+            val draft = if (item.unreadCount == 0) pl.sinusoide.sinuschat.util.Drafts.get(ctx, item.id) else null
+            holder.lastMsg.text = if (draft != null) {
+                val label = ctx.getString(R.string.draft_prefix)
+                android.text.SpannableStringBuilder(label).apply {
+                    setSpan(android.text.style.ForegroundColorSpan(0xFFE5484D.toInt()), 0, label.length,
+                        android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                    append(" ")
+                    append(draft.replace('\n', ' '))
+                }
+            } else item.lastMessage
             
             val hasTime = item.lastMessageAt.seconds > 0L
             holder.time.visibility = if (hasTime && item.lastMessage.isNotEmpty()) View.VISIBLE else View.INVISIBLE

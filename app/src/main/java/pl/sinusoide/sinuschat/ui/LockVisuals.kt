@@ -36,7 +36,8 @@ class LockPalette private constructor(
     val accent: Int,
     val accent2: Int,
     val onAccent: Int,
-    val sparkCore: Int
+    val sparkCore: Int,
+    val retro: Boolean = false
 ) {
     val orb: Int get() = if (dark) Color.WHITE else accent
     val onOrb: Int get() = if (dark) 0xFF101820.toInt() else onAccent
@@ -49,6 +50,15 @@ class LockPalette private constructor(
         fun of(ctx: Context): LockPalette {
             val accent = ThemeUi.accent(ctx)
             if (ThemeUi.isFlow(ctx)) return glass(accent)
+            if (pl.sinusoide.sinuschat.util.ThemeManager.isRetro(ctx)) return LockPalette(
+                flow = false, dark = false,
+                background = RetroUi.PANEL,
+                fill = Color.WHITE, fillPressed = 0xFFC4D5EE.toInt(),
+                rimTop = RetroUi.FRAME, rimBottom = RetroUi.FRAME,
+                text = RetroUi.NAVY, textSecondary = 0xFF3D5E8C.toInt(),
+                accent = RetroUi.TITLE_MID, accent2 = RetroUi.TITLE_MID, onAccent = Color.WHITE,
+                sparkCore = Color.BLACK, retro = true
+            )
             val dark = isDark(ctx)
             val card = ThemeUi.card(ctx)
             val border = ThemeUi.border(ctx)
@@ -357,6 +367,7 @@ class PinFieldView(
     fun holdColor(color: Int) { stateColor = color; stateMix = 1f; invalidate() }
 
     override fun onDraw(canvas: Canvas) {
+        if (palette.retro) { drawRetro(canvas); return }
         val w = width.toFloat(); val h = height.toFloat()
         val r = h / 2f
         rect.set(1 * d, 1 * d, w - 1 * d, h - 1 * d)
@@ -399,6 +410,33 @@ class PinFieldView(
             canvas.drawCircle(s.x, h / 2f, core * 0.55f, spark)
         }
         if (alive) postInvalidateOnAnimation()
+    }
+
+    private fun drawRetro(canvas: Canvas) {
+        val w = width.toFloat(); val h = height.toFloat()
+        val sw = (1f + stateMix) * d
+        rect.set(sw / 2f, sw / 2f, w - sw / 2f, h - sw / 2f)
+        fill.shader = null
+        fill.color = Color.WHITE
+        canvas.drawRect(rect, fill)
+        rim.shader = null
+        rim.color = if (stateMix > 0f) blend(palette.rimTop, stateColor, stateMix) else if (isSelected) RetroUi.TITLE_MID else palette.rimTop
+        rim.strokeWidth = sw
+        canvas.drawRect(rect, rim)
+        if (!showDots) {
+            if (hasInput) {
+                dotPaint.color = Color.BLACK
+                canvas.drawRect(8 * d, h * 0.3f, 9.5f * d, h * 0.7f, dotPaint)
+            }
+            return
+        }
+        val spacing = 13f * d
+        dotPaint.shader = null
+        dotPaint.color = Color.BLACK
+        dotPaint.alpha = 255
+        dotBorn.indices.forEach { i ->
+            canvas.drawCircle(10 * d + i * spacing, h / 2f, 3.6f * d, dotPaint)
+        }
     }
 
     private fun drawDots(canvas: Canvas, w: Float, h: Float, now: Long) {
@@ -509,6 +547,7 @@ class GlassKeyView(
         val was = isPressed
         super.setPressed(pressed)
         if (was == pressed) return
+        if (palette.retro) { press = if (pressed) 1f else 0f; invalidate(); return }
         pressAnim?.cancel()
         pressAnim = ValueAnimator.ofFloat(press, if (pressed) 1f else 0f).apply {
             duration = if (pressed) 70 else 320
@@ -522,7 +561,37 @@ class GlassKeyView(
             .start()
     }
 
+    private val box = RectF()
+
+    private fun drawRetro(canvas: Canvas) {
+        val cx = width / 2f; val cy = height / 2f
+        val sw = d.coerceAtLeast(1f)
+        box.set(sw / 2f, sw / 2f, width - sw / 2f, height - sw / 2f)
+        fill.shader = LinearGradient(0f, 0f, 0f, height.toFloat(),
+            if (press > 0f) intArrayOf(0xFFA9C2E6.toInt(), 0xFFC4D5EE.toInt(), 0xFFD9E4F4.toInt())
+            else intArrayOf(Color.WHITE, 0xFFECF1F9.toInt(), 0xFFD5E0F0.toInt()),
+            null, Shader.TileMode.CLAMP)
+        canvas.drawRoundRect(box, 3 * d, 3 * d, fill)
+        rim.shader = null
+        rim.strokeWidth = sw
+        rim.color = if (press > 0f) RetroUi.TITLE_LINE else RetroUi.FRAME
+        canvas.drawRoundRect(box, 3 * d, 3 * d, rim)
+        if (digit != null) {
+            digitPaint.typeface = Typeface.DEFAULT
+            digitPaint.textSize = android.util.TypedValue.applyDimension(android.util.TypedValue.COMPLEX_UNIT_SP, 22f, resources.displayMetrics)
+            canvas.drawText(digit, cx, cy - (digitPaint.descent() + digitPaint.ascent()) / 2f, digitPaint)
+        }
+        icon?.let {
+            val s = 22f * d
+            it.setTint(RetroUi.NAVY)
+            it.setBounds((cx - s / 2).toInt(), (cy - s / 2).toInt(), (cx + s / 2).toInt(), (cy + s / 2).toInt())
+            it.alpha = 255
+            it.draw(canvas)
+        }
+    }
+
     override fun onDraw(canvas: Canvas) {
+        if (palette.retro) { drawRetro(canvas); return }
         val cx = width / 2f; val cy = height / 2f
         val r = min(width, height) / 2f - 2 * d
         if (sparkle) {

@@ -1392,6 +1392,12 @@
     <string name="theme_selected">Вибрано: %1$s</string>
     <string name="theme_desc_dark">Темно-синій фон, який не втомлює очі ввечері й заощаджує батарею на екранах OLED.</string>
     <string name="theme_desc_light">Світлий фон і білі бульбашки — добре читаються на сонці й при яскравому світлі.</string>
+    <string name="theme_retro">Пізні 2000-ні</string>
+    <string name="theme_desc_retro">Як месенджери кінця 2000-х: світлі вікна, сині панелі з градієнтом і кутасті бульбашки.</string>
+    <string name="retro_me">Я</string>
+    <string name="retro_online">У мережі</string>
+    <string name="retro_groups">Групи</string>
+    <string name="retro_offline">Не в мережі</string>
     <string name="theme_desc_dynamic">Кольори підбираються зі шпалер телефона. Світлий або темний режим змінюється разом із налаштуванням системи.</string>
     <string name="theme_desc_flow">Темно-синій і блакитний, як на сайті sinusoide.pl, а на них скляні картки. Плаваюча панель навігації з лінзою: утримуйте виділення й перетягуйте — значки й підписи заломлюються, як у справжньому склі.</string>
     <string name="theme_dynamic_unavailable">Тема з кольорів системи потребує Android 12 або новішого.</string>
@@ -2038,4 +2044,8 @@
     <string name="walkie_failed">Не вдалося ввімкнути рацію. Перевірте, чи ви в мережі Wi‑Fi.</string>
     <string name="walkie_ring_title">Рація: %1$s</string>
     <string name="walkie_ring_text">Хтось із групи ввімкнув рацію в тій самій мережі Wi‑Fi</string>
+    <string name="retro_pin_new">Новий PIN:</string>
+    <string name="retro_pin_repeat">Підтвердіть новий PIN:</string>
+    <string name="retro_login_hint">Щоб почати, введіть свій PIN</string>
+    <string name="draft_prefix">Чернетка:</string>
 </resources>

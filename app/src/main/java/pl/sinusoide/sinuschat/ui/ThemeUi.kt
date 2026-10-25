@@ -69,7 +69,7 @@ object ThemeUi {
 
     fun rounded(ctx: Context, color: Int, radiusDp: Float): GradientDrawable = GradientDrawable().apply {
         val d = ctx.resources.displayMetrics.density
-        cornerRadius = radiusDp * d
+        cornerRadius = (if (ThemeManager.isRetro(ctx)) minOf(radiusDp, 2f) else radiusDp) * d
         setColor(color)
         if (isFlow(ctx) && isGlass(color)) setStroke((1 * d).toInt().coerceAtLeast(1), GLASS_RIM)
     }

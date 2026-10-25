@@ -1416,6 +1416,12 @@
     <string name="theme_selected">Selected: %1$s</string>
     <string name="theme_desc_dark">A dark blue background that is easy on the eyes at night and saves battery on OLED screens.</string>
     <string name="theme_desc_light">A light background with white bubbles — easy to read in sunlight and bright rooms.</string>
+    <string name="theme_retro">Late 2000s</string>
+    <string name="theme_desc_retro">Like messengers from the late 2000s: bright windows, blue gradient bars and square bubbles.</string>
+    <string name="retro_me">Me</string>
+    <string name="retro_online">Online</string>
+    <string name="retro_groups">Groups</string>
+    <string name="retro_offline">Offline</string>
     <string name="theme_desc_dynamic">Colours picked from your wallpaper. Light or dark mode follows your system setting.</string>
     <string name="theme_desc_flow">Navy and cyan like the sinusoide.pl website, with glass cards on top. A floating navigation bar with a lens: hold the selection and drag it — icons and labels bend like real glass.</string>
     <string name="theme_dynamic_unavailable">The system colour theme requires Android 12 or newer.</string>
@@ -2041,4 +2047,8 @@
     <string name="walkie_failed">Couldn\'t start the walkie-talkie. Check that you\'re on Wi‑Fi.</string>
     <string name="walkie_ring_title">Walkie-talkie: %1$s</string>
     <string name="walkie_ring_text">Someone from the group started a walkie-talkie on the same Wi‑Fi network</string>
+    <string name="retro_pin_new">New PIN:</string>
+    <string name="retro_pin_repeat">Confirm new PIN:</string>
+    <string name="retro_login_hint">To begin, enter your PIN</string>
+    <string name="draft_prefix">Draft:</string>
 </resources>

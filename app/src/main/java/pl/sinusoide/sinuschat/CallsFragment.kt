@@ -77,6 +77,7 @@ class CallsFragment : Fragment() {
             bottomMargin = (12 * dp).toInt()
         })
         root.addView(header)
+        if (pl.sinusoide.sinuschat.util.ThemeManager.isRetro(ctx)) pl.sinusoide.sinuschat.ui.RetroUi.styleTitleBar(header)
         androidx.core.view.ViewCompat.setOnApplyWindowInsetsListener(header) { v, insets ->
             val top = insets.getInsets(androidx.core.view.WindowInsetsCompat.Type.systemBars()).top
             v.setPadding((20 * dp).toInt(), top, (20 * dp).toInt(), 0)

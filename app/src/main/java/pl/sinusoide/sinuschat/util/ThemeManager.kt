@@ -14,6 +14,7 @@ object ThemeManager {
     const val THEME_LIGHT   = "light"
     const val THEME_DYNAMIC = "dynamic"
     const val THEME_FLOW    = "flow"
+    const val THEME_RETRO   = "retro"
 
     private const val PREFS = "sinuschat_theme_prefs"
     private const val KEY_THEME = "theme_mode"
@@ -24,6 +25,8 @@ object ThemeManager {
 
     fun isFlow(ctx: Context): Boolean = getCurrent(ctx) == THEME_FLOW
 
+    fun isRetro(ctx: Context): Boolean = getCurrent(ctx) == THEME_RETRO
+
     fun setCurrent(ctx: Context, theme: String) {
         ctx.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
             .edit().putString(KEY_THEME, theme).apply()
@@ -32,7 +35,7 @@ object ThemeManager {
 
     fun applyNightMode(ctx: Context) {
         val mode = when (getCurrent(ctx)) {
-            THEME_LIGHT   -> AppCompatDelegate.MODE_NIGHT_NO
+            THEME_LIGHT, THEME_RETRO -> AppCompatDelegate.MODE_NIGHT_NO
             THEME_DYNAMIC -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
             else          -> AppCompatDelegate.MODE_NIGHT_YES
         }
@@ -57,6 +60,7 @@ object ThemeManager {
 
     fun getBackgroundColor(ctx: Context): Int = when (getCurrent(ctx)) {
         THEME_LIGHT   -> 0xFFD6DDE3.toInt()
+        THEME_RETRO   -> 0xFFC7D7EE.toInt()
         THEME_FLOW    -> pl.sinusoide.sinuschat.ui.FlowBackdropDrawable.INK
         else          -> 0xFF0E1621.toInt()
     }
@@ -74,6 +78,7 @@ object ThemeManager {
         THEME_LIGHT   -> R.style.Theme_SinusChat_Light
         THEME_DYNAMIC -> R.style.Theme_SinusChat_Dynamic
         THEME_FLOW    -> R.style.Theme_SinusChat_Flow
+        THEME_RETRO   -> R.style.Theme_SinusChat_Retro
         else          -> R.style.Theme_SinusChat
     }
 }

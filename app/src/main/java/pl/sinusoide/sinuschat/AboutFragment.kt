@@ -157,6 +157,7 @@ class AboutFragment : Fragment() {
         headerSearchIcon = searchIcon
         pl.sinusoide.sinuschat.ui.PillWarmUp.prime(pill) { searchOpen }
         if (!overlay) outer.addView(header)
+        if (pl.sinusoide.sinuschat.util.ThemeManager.isRetro(ctx)) pl.sinusoide.sinuschat.ui.RetroUi.styleTitleBar(header)
         ViewCompat.setOnApplyWindowInsetsListener(header) { v, insets ->
             v.setPadding(0, insets.getInsets(WindowInsetsCompat.Type.systemBars()).top, 0, 0)
             insets

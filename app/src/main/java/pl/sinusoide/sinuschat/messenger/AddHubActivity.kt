@@ -367,7 +367,7 @@ class AddHubActivity : AppCompatActivity() {
             try {
                 val myHash = SetupActivity.getUserPhoneHash(this)
                 val myName = SetupActivity.getUserDisplayName(this)
-                val token = ContactQr.encode(myHash, myName)
+                val token = ContactQr.encode(myHash, myName, pl.sinusoide.sinuschat.crypto.ProfileCrypto.myKeyB64(this))
                 val payload = "${pl.sinusoide.sinuschat.AppConfig.ADD_LINK_BASE}$token"
                 val logo = try {
                     val d = packageManager.getApplicationIcon(packageName)
@@ -448,6 +448,7 @@ class AddHubActivity : AppCompatActivity() {
             PopupHelper.show(this, getString(R.string.your_own_code))
             return
         }
+        ContactQr.remember(this, token)
         val convId = if (myHash < hash) "${myHash}_${hash}" else "${hash}_${myHash}"
         startActivity(Intent(this, ChatActivity::class.java).apply {
             putExtra("conversationId", convId)

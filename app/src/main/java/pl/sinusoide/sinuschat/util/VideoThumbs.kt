@@ -39,7 +39,7 @@ object VideoThumbs {
     fun bitmap(ctx: Context, conv: String, id: String): Bitmap? {
         bitmaps.get("$conv|$id")?.let { return it }
         val jpeg = load(ctx, conv, id)?.jpeg ?: return null
-        val bmp = BitmapFactory.decodeByteArray(jpeg, 0, jpeg.size) ?: return null
+        val bmp = ImagePrep.decodeSampled(jpeg, 1280) ?: return null
         bitmaps.put("$conv|$id", bmp)
         return bmp
     }

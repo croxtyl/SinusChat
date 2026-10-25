@@ -69,6 +69,8 @@ object SignalProtocol {
                     st.putInt("meta", "reg_id", 1 + rnd.nextInt(16380))
                     st.putInt("meta", "next_prekey", 1 + rnd.nextInt(0x7FFFFF))
                     st.putInt("meta", "next_signed", 1 + rnd.nextInt(0x7FFFFF))
+                    pl.sinusoide.sinuschat.util.LinkLog.add(ctx, "signal", "nowa tożsamość, stan od nowa")
+                    pl.sinusoide.sinuschat.util.AppExecutor.io { ensureKeysUploaded(ctx, 0L) }
                 }
             }
         }
@@ -223,13 +225,14 @@ object SignalProtocol {
         class Ok(val bytes: ByteArray) : Opened()
         object Duplicate : Opened()
         object Failed : Opened()
+        object Unavailable : Opened()
     }
 
     fun isV2(payload: JSONObject) = payload.optInt("v", 0) == 2 && payload.has("c")
 
     fun decrypt(ctx: Context, peer: String, v2: JSONObject): Opened {
-        val st = ready(ctx) ?: return Opened.Failed
-        val me = me(ctx).ifEmpty { return Opened.Failed }
+        val st = ready(ctx) ?: return Opened.Unavailable
+        val me = me(ctx).ifEmpty { return Opened.Unavailable }
         val bytes = try { unb64(v2.getString("c")) } catch (_: Exception) { return Opened.Failed }
         var usedPreKey = false
         val result = try {
@@ -246,6 +249,10 @@ object SignalProtocol {
             Opened.Duplicate
         } catch (e: Exception) {
             Log.w(TAG, "Odszyfrowanie nieudane (${e.javaClass.simpleName}): ${e.message}")
+            val type = if (v2.optInt("t") == CiphertextMessage.PREKEY_TYPE) "prekey" else "whisper"
+            val detail = e.message.orEmpty().replace(Regex("[a-f0-9]{16,}"), "#").take(80)
+            pl.sinusoide.sinuschat.util.LinkLog.add(ctx, "decrypt", "$type ${e.javaClass.simpleName}: $detail")
+            pl.sinusoide.sinuschat.util.AppExecutor.io { ensureKeysUploaded(ctx, 10 * 60_000L) }
             Opened.Failed
         }
         if (usedPreKey && result is Opened.Ok) {

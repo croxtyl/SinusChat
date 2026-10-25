@@ -40,6 +40,7 @@ object FlowGlass {
 
     fun show(dialog: Dialog) {
         dialog.show()
+        RetroShape.dialog(dialog)
         if (!ThemeManager.isFlow(dialog.context)) return
         dialog.window?.decorView?.let { attach(it) }
         dialog.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)?.let { sheet ->

@@ -33,6 +33,7 @@ import pl.sinusoide.sinuschat.ui.GlassKeyView
 import pl.sinusoide.sinuschat.ui.LockPalette
 import pl.sinusoide.sinuschat.ui.LockRingView
 import pl.sinusoide.sinuschat.ui.PinFieldView
+import pl.sinusoide.sinuschat.ui.RetroUi
 import pl.sinusoide.sinuschat.ui.finishWithFade
 import pl.sinusoide.sinuschat.ui.startWithFade
 import pl.sinusoide.sinuschat.util.AppExecutor
@@ -130,6 +131,8 @@ class ScreenLockActivity : AppCompatActivity() {
     private lateinit var noticeHost: LinearLayout
     private lateinit var content: LinearLayout
     private var autoConfirmRow: View? = null
+    private var retroFields: Pair<PinFieldView, PinFieldView>? = null
+    private var keyShrink = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         ThemeManager.applyTheme(this)
@@ -188,6 +191,7 @@ class ScreenLockActivity : AppCompatActivity() {
     }
 
     private fun buildUi() {
+        if (palette.retro) { buildRetroUi(); return }
         val root = FrameLayout(this)
         aurora = AuroraBackgroundView(this, palette)
         root.addView(aurora, FrameLayout.LayoutParams(-1, -1))
@@ -330,6 +334,349 @@ class ScreenLockActivity : AppCompatActivity() {
         }
 
         setContentView(root)
+        fitKeypad(scroll)
+    }
+
+    private fun xpText(value: String, size: Float, color: Int, bold: Boolean = false) = TextView(this).apply {
+        text = value; textSize = size; setTextColor(color)
+        if (bold) typeface = Typeface.DEFAULT_BOLD
+    }
+
+    private fun xpButton(label: String, onClick: () -> Unit) = TextView(this).apply {
+        text = label
+        textSize = 14f; setTextColor(RetroUi.NAVY); gravity = Gravity.CENTER
+        background = RetroUi.button(this@ScreenLockActivity)
+        minWidth = (84 * dp).toInt()
+        setPadding((14 * dp).toInt(), (8 * dp).toInt(), (14 * dp).toInt(), (8 * dp).toInt())
+        isClickable = true
+        setOnClickListener { onClick() }
+    }
+
+    private fun retroCommon() {
+        aurora = AuroraBackgroundView(this, palette)
+        ring = LockRingView(this, palette)
+        tvTitle = TextView(this)
+        tvDescription = TextView(this)
+        noticeHost = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL }
+        keypad = buildKeypad()
+        tvMessage = TextView(this).apply {
+            textSize = 13f; setTextColor(cSecondary); gravity = Gravity.CENTER_VERTICAL
+            minHeight = (20 * dp).toInt()
+        }
+        pinField = PinFieldView(this, palette, "", showDots = LockManager.isShowPinDots(this))
+    }
+
+    private fun buildRetroUi() {
+        retroCommon()
+        if (mode == MODE_UNLOCK) buildRetroLogin() else buildRetroDialog()
+    }
+
+    private fun buildRetroLogin() {
+        val bandDark = 0xFF00309C.toInt()
+        val root = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            background = GradientDrawable(GradientDrawable.Orientation.TL_BR,
+                intArrayOf(0xFF7AA1E6.toInt(), 0xFF5A7EDC.toInt(), 0xFF5A7EDC.toInt()))
+        }
+        val top = FrameLayout(this).apply { setBackgroundColor(bandDark) }
+        top.addView(View(this), FrameLayout.LayoutParams(-1, (52 * dp).toInt()))
+        root.addView(top, LinearLayout.LayoutParams(-1, -2))
+        root.addView(View(this).apply {
+            background = GradientDrawable(GradientDrawable.Orientation.LEFT_RIGHT,
+                intArrayOf(0x005A7EDC, 0xFFFFFFFF.toInt(), 0x005A7EDC))
+        }, LinearLayout.LayoutParams(-1, (2 * dp).toInt()))
+
+        val scroll = ScrollView(this).apply {
+            isFillViewport = true
+            isVerticalScrollBarEnabled = false
+            overScrollMode = View.OVER_SCROLL_NEVER
+        }
+        content = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            gravity = Gravity.CENTER_HORIZONTAL
+            setPadding((22 * dp).toInt(), (18 * dp).toInt(), (22 * dp).toInt(), (14 * dp).toInt())
+        }
+        scroll.addView(content)
+        root.addView(scroll, LinearLayout.LayoutParams(-1, 0, 1f))
+
+        val logo = LinearLayout(this).apply { orientation = LinearLayout.HORIZONTAL; gravity = Gravity.CENTER_VERTICAL }
+        logo.addView(ImageView(this).apply { setImageResource(R.mipmap.ic_launcher) },
+            LinearLayout.LayoutParams((58 * dp).toInt(), (58 * dp).toInt()).apply { marginEnd = (12 * dp).toInt() })
+        logo.addView(LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            addView(xpText(getString(R.string.app_name), 30f, Color.WHITE, bold = true).apply {
+                setShadowLayer(3 * dp, 1 * dp, 1 * dp, 0x66000000)
+            })
+            addView(tvDescription.apply { textSize = 14f; setTextColor(Color.WHITE) })
+        })
+        content.addView(logo, LinearLayout.LayoutParams(-2, -2))
+        content.addView(noticeHost, LinearLayout.LayoutParams(-1, -2))
+
+        content.addView(View(this).apply {
+            background = GradientDrawable(GradientDrawable.Orientation.LEFT_RIGHT,
+                intArrayOf(0x00FFFFFF, 0xCCFFFFFF.toInt(), 0x00FFFFFF))
+        }, LinearLayout.LayoutParams(-1, (1 * dp).toInt()).apply {
+            topMargin = (18 * dp).toInt(); bottomMargin = (14 * dp).toInt()
+        })
+
+        val name = pl.sinusoide.sinuschat.setup.SetupActivity.getUserDisplayName(this)
+        val shown = name.ifEmpty { getString(R.string.app_name) }
+        val tile = LinearLayout(this).apply {
+            orientation = LinearLayout.HORIZONTAL
+            gravity = Gravity.CENTER_VERTICAL
+            background = GradientDrawable(GradientDrawable.Orientation.LEFT_RIGHT,
+                intArrayOf(0xFF1E4FC2.toInt(), 0x335A7EDC)).apply { cornerRadius = 2 * dp }
+            setPadding((8 * dp).toInt(), (8 * dp).toInt(), (8 * dp).toInt(), (8 * dp).toInt())
+        }
+        val avatar = ImageView(this).apply {
+            scaleType = ImageView.ScaleType.CENTER_CROP
+            background = GradientDrawable().apply { setColor(Color.WHITE); cornerRadius = 2 * dp }
+            val p = (2 * dp).toInt(); setPadding(p, p, p, p)
+        }
+        tile.addView(avatar, LinearLayout.LayoutParams((60 * dp).toInt(), (60 * dp).toInt()).apply { marginEnd = (12 * dp).toInt() })
+        if (!pl.sinusoide.sinuschat.util.AvatarHelper.loadAvatarInto(this, avatar)) {
+            pl.sinusoide.sinuschat.util.AvatarHelper.setLetterAvatar(this, avatar, shown,
+                pl.sinusoide.sinuschat.util.AvatarHelper.getMyColor(this))
+        }
+        val side = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL }
+        side.addView(xpText(shown, 19f, Color.WHITE).apply {
+            maxLines = 1; ellipsize = android.text.TextUtils.TruncateAt.END
+        })
+        side.addView(xpText(getString(R.string.lock_pin_placeholder), 12.5f, 0xFFDCE6F8.toInt()).apply {
+            setPadding(0, (4 * dp).toInt(), 0, (3 * dp).toInt())
+        })
+        val fieldRow = LinearLayout(this).apply { orientation = LinearLayout.HORIZONTAL; gravity = Gravity.CENTER_VERTICAL }
+        fieldRow.addView(pinField, LinearLayout.LayoutParams(0, (32 * dp).toInt(), 1f).apply { marginEnd = (6 * dp).toInt() })
+        btnNext = TextView(this).apply {
+            contentDescription = getString(R.string.next)
+            val arrow = androidx.core.content.ContextCompat.getDrawable(this@ScreenLockActivity, R.drawable.ic_chevron_right)!!.mutate()
+            arrow.setTint(Color.WHITE)
+            val box = GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM,
+                intArrayOf(0xFF6CC56C.toInt(), 0xFF3A9E3A.toInt(), 0xFF2E8B2E.toInt())).apply {
+                cornerRadius = 2 * dp
+                setStroke((1 * dp).toInt(), Color.WHITE)
+            }
+            background = android.graphics.drawable.LayerDrawable(arrayOf(box, arrow)).apply {
+                val i = (4 * dp).toInt(); setLayerInset(1, i, i, i, i)
+            }
+            isClickable = true
+            setOnClickListener { handleNext() }
+        }
+        fieldRow.addView(btnNext, LinearLayout.LayoutParams((32 * dp).toInt(), (32 * dp).toInt()))
+        side.addView(fieldRow, LinearLayout.LayoutParams(-1, -2))
+        tile.addView(side, LinearLayout.LayoutParams(0, -2, 1f))
+        content.addView(tile, LinearLayout.LayoutParams(-1, -2))
+
+        tvMessage.setTextColor(Color.WHITE)
+        content.addView(tvMessage, LinearLayout.LayoutParams(-1, -2).apply {
+            topMargin = (8 * dp).toInt(); bottomMargin = (10 * dp).toInt()
+        })
+        content.addView(View(this), LinearLayout.LayoutParams(1, 0, 1f))
+        content.addView(keypad, LinearLayout.LayoutParams(-2, -2))
+
+        root.addView(View(this).apply {
+            background = GradientDrawable(GradientDrawable.Orientation.LEFT_RIGHT,
+                intArrayOf(0x00F99736, 0xFFF99736.toInt(), 0x00F99736))
+        }, LinearLayout.LayoutParams(-1, (2 * dp).toInt()))
+        val bottom = FrameLayout(this).apply { setBackgroundColor(bandDark) }
+        forgotLink = TextView(this).apply {
+            text = getString(R.string.lock_forgot)
+            textSize = 14f; setTextColor(Color.WHITE)
+            paintFlags = paintFlags or android.graphics.Paint.UNDERLINE_TEXT_FLAG
+            setPadding((18 * dp).toInt(), 0, (18 * dp).toInt(), 0)
+            gravity = Gravity.CENTER_VERTICAL
+            visibility = View.GONE
+            isClickable = true
+            setOnClickListener { if (!busy) askRecoveryKey() }
+        }
+        bottom.addView(forgotLink, FrameLayout.LayoutParams(-2, (48 * dp).toInt(), Gravity.START or Gravity.TOP))
+        bottom.addView(View(this), FrameLayout.LayoutParams(1, (48 * dp).toInt()))
+        root.addView(bottom, LinearLayout.LayoutParams(-1, -2))
+        updateForgotLink(animate = false)
+
+        ViewCompat.setOnApplyWindowInsetsListener(root) { _, insets ->
+            val bars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            top.setPadding(bars.left, bars.top, bars.right, 0)
+            bottom.setPadding(bars.left, 0, bars.right, bars.bottom)
+            scroll.setPadding(bars.left, 0, bars.right, 0)
+            insets
+        }
+        setContentView(root)
+        fitKeypad(scroll)
+        RetroUi.lightStatusIcons(this)
+    }
+
+    private fun buildRetroDialog() {
+        val twoFields = mode == MODE_SET || mode == MODE_SET_DURESS
+        val root = FrameLayout(this).apply { setBackgroundColor(RetroUi.CHROME) }
+        val scroll = ScrollView(this).apply {
+            isFillViewport = true
+            isVerticalScrollBarEnabled = false
+            overScrollMode = View.OVER_SCROLL_NEVER
+        }
+        val holder = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            gravity = Gravity.CENTER
+            setPadding((12 * dp).toInt(), (12 * dp).toInt(), (12 * dp).toInt(), (12 * dp).toInt())
+        }
+        scroll.addView(holder)
+        root.addView(scroll, FrameLayout.LayoutParams(-1, -1))
+        ViewCompat.setOnApplyWindowInsetsListener(scroll) { v, insets ->
+            val bars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(bars.left, bars.top, bars.right, bars.bottom)
+            insets
+        }
+
+        val frame = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            background = GradientDrawable().apply {
+                setColor(RetroUi.PANEL)
+                setStroke((1 * dp).toInt(), RetroUi.TITLE_LINE)
+            }
+            val p = (1 * dp).toInt(); setPadding(p, p, p, p)
+        }
+        holder.addView(frame, LinearLayout.LayoutParams(-1, -2))
+
+        val bar = LinearLayout(this).apply {
+            orientation = LinearLayout.HORIZONTAL
+            gravity = Gravity.CENTER_VERTICAL
+            background = RetroUi.titleBar(this@ScreenLockActivity)
+            setPadding((6 * dp).toInt(), 0, (4 * dp).toInt(), 0)
+        }
+        bar.addView(ImageView(this).apply { setImageResource(R.mipmap.ic_launcher) },
+            LinearLayout.LayoutParams((18 * dp).toInt(), (18 * dp).toInt()).apply { marginEnd = (6 * dp).toInt() })
+        bar.addView(tvTitle.apply {
+            textSize = 14f; setTextColor(Color.WHITE); typeface = Typeface.DEFAULT_BOLD
+            maxLines = 1; ellipsize = android.text.TextUtils.TruncateAt.END
+        }, LinearLayout.LayoutParams(0, -2, 1f))
+        if (!forcedNewPin) bar.addView(TextView(this).apply {
+            text = "X"
+            contentDescription = getString(R.string.cancel)
+            textSize = 13f; setTextColor(Color.WHITE); typeface = Typeface.DEFAULT_BOLD; gravity = Gravity.CENTER
+            background = GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM,
+                intArrayOf(0xFFE88A6E.toInt(), 0xFFD6492E.toInt(), 0xFFC23A1F.toInt())).apply {
+                cornerRadius = 2 * dp; setStroke((1 * dp).toInt(), Color.WHITE)
+            }
+            isClickable = true
+            setOnClickListener { finish() }
+        }, LinearLayout.LayoutParams((24 * dp).toInt(), (24 * dp).toInt()))
+        frame.addView(bar, LinearLayout.LayoutParams(-1, (32 * dp).toInt()))
+
+        content = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            setPadding((14 * dp).toInt(), (12 * dp).toInt(), (14 * dp).toInt(), (14 * dp).toInt())
+        }
+        frame.addView(content, LinearLayout.LayoutParams(-1, -2))
+
+        content.addView(tvDescription.apply {
+            textSize = 13.5f; setTextColor(RetroUi.NAVY); setLineSpacing(0f, 1.15f)
+        }, LinearLayout.LayoutParams(-1, -2))
+
+        if (mode == MODE_SHUFFLE_TEST) {
+            val steps = LinearLayout(this).apply { orientation = LinearLayout.HORIZONTAL }
+            repeat(SHUFFLE_ROUNDS) { i ->
+                val step = View(this).apply {
+                    background = GradientDrawable().apply { setColor(stepIdle()) }
+                }
+                shuffleSteps += step
+                steps.addView(step, LinearLayout.LayoutParams((34 * dp).toInt(), (8 * dp).toInt()).apply {
+                    if (i > 0) marginStart = (4 * dp).toInt()
+                })
+            }
+            content.addView(steps, LinearLayout.LayoutParams(-1, -2).apply { topMargin = (12 * dp).toInt() })
+        }
+        content.addView(noticeHost, LinearLayout.LayoutParams(-1, -2))
+
+        fun label(text: String) = xpText(text, 13.5f, RetroUi.NAVY).apply {
+            setPadding(0, (12 * dp).toInt(), 0, (4 * dp).toInt())
+        }
+        if (twoFields) {
+            val first = pinField
+            val second = PinFieldView(this, palette, "", showDots = LockManager.isShowPinDots(this))
+            retroFields = first to second
+            content.addView(label(getString(R.string.retro_pin_new)))
+            content.addView(first, LinearLayout.LayoutParams(-1, (32 * dp).toInt()))
+            content.addView(label(getString(R.string.retro_pin_repeat)))
+            content.addView(second, LinearLayout.LayoutParams(-1, (32 * dp).toInt()))
+            first.setOnClickListener { restartRetroPin() }
+            first.isSelected = true
+        } else {
+            content.addView(label(getString(R.string.retro_pin_label)))
+            content.addView(pinField, LinearLayout.LayoutParams(-1, (32 * dp).toInt()))
+            pinField.isSelected = true
+        }
+        content.addView(tvMessage, LinearLayout.LayoutParams(-1, -2).apply { topMargin = (6 * dp).toInt() })
+        if (twoFields) tvMessage.text = getString(R.string.min_4_digits)
+
+        if (mode == MODE_SET) {
+            val sw = MaterialSwitch(this).apply {
+                isChecked = isAutoConfirm
+                setOnCheckedChangeListener { _, checked -> isAutoConfirm = checked; updateNextButton() }
+            }
+            autoConfirmRow = LinearLayout(this).apply {
+                orientation = LinearLayout.HORIZONTAL
+                gravity = Gravity.CENTER_VERTICAL
+                isClickable = true
+                setOnClickListener { sw.isChecked = !sw.isChecked }
+                addView(sw, LinearLayout.LayoutParams(-2, -2).apply { marginEnd = (8 * dp).toInt() })
+                addView(LinearLayout(this@ScreenLockActivity).apply {
+                    orientation = LinearLayout.VERTICAL
+                    addView(xpText(getString(R.string.lock_auto_confirm), 13.5f, RetroUi.NAVY))
+                    addView(xpText(getString(R.string.lock_auto_confirm_desc), 12f, cSecondary))
+                }, LinearLayout.LayoutParams(0, -2, 1f))
+            }
+            content.addView(autoConfirmRow, LinearLayout.LayoutParams(-1, -2).apply { topMargin = (8 * dp).toInt() })
+        }
+
+        content.addView(keypad, LinearLayout.LayoutParams(-2, -2).apply {
+            gravity = Gravity.CENTER_HORIZONTAL; topMargin = (14 * dp).toInt()
+        })
+
+        val buttons = LinearLayout(this).apply { orientation = LinearLayout.HORIZONTAL; gravity = Gravity.END }
+        btnNext = xpButton(getString(R.string.retro_ok)) { handleNext() }
+        buttons.addView(btnNext)
+        if (!forcedNewPin) buttons.addView(xpButton(getString(R.string.cancel)) { finish() },
+            LinearLayout.LayoutParams(-2, -2).apply { marginStart = (8 * dp).toInt() })
+        content.addView(buttons, LinearLayout.LayoutParams(-1, -2).apply { topMargin = (16 * dp).toInt() })
+
+        if (mode == MODE_SHUFFLE_TEST) {
+            shuffleOffLink = xpText(getString(R.string.lock_shuffle_test_off), 13.5f, RetroUi.TITLE_MID).apply {
+                paintFlags = paintFlags or android.graphics.Paint.UNDERLINE_TEXT_FLAG
+                setPadding(0, (12 * dp).toInt(), 0, 0)
+                isClickable = true
+                setOnClickListener {
+                    if (busy) return@setOnClickListener
+                    LockManager.setShuffleKeypad(this@ScreenLockActivity, false)
+                    finish()
+                }
+            }
+            content.addView(shuffleOffLink, LinearLayout.LayoutParams(-1, -2))
+        }
+        setContentView(root)
+        fitKeypad(scroll)
+    }
+
+    private fun advanceRetroField(): Boolean {
+        val fields = retroFields ?: return false
+        fields.first.isSelected = false
+        fields.second.isSelected = true
+        pinField = fields.second
+        return true
+    }
+
+    private fun restartRetroPin() {
+        val fields = retroFields ?: return
+        if (busy || firstPin.isEmpty()) return
+        firstPin = ""
+        currentPin = ""
+        fields.first.clear(); fields.second.clear()
+        fields.second.isSelected = false
+        fields.first.isSelected = true
+        pinField = fields.first
+        setupTexts()
+        autoConfirmRow?.visibility = View.VISIBLE
+        autoConfirmRow?.alpha = 1f; autoConfirmRow?.translationY = 0f
+        updateNextButton()
     }
 
     private fun buildKeypad(): LinearLayout {
@@ -343,6 +690,41 @@ class ScreenLockActivity : AppCompatActivity() {
         return if (shuffle) digits.shuffled(java.security.SecureRandom()) else digits
     }
 
+    private fun keyDims(): Triple<Int, Int, Int> {
+        if (palette.retro) {
+            val h = (46 * dp).toInt() - keyShrink
+            return Triple((84 * dp).toInt(), h, ((6 * dp).toInt() - keyShrink / 4).coerceAtLeast((3 * dp).toInt()))
+        }
+        val k = (78 * dp).toInt() - keyShrink
+        return Triple(k, k, ((14 * dp).toInt() - keyShrink / 2).coerceAtLeast((6 * dp).toInt()))
+    }
+
+    private fun fitKeypad(scroll: ScrollView) {
+        val maxShrink = ((if (palette.retro) 12 else 24) * dp).toInt()
+        scroll.addOnLayoutChangeListener { _, _, _, _, _, _, _, _, _ ->
+            val child = scroll.getChildAt(0) ?: return@addOnLayoutChangeListener
+            val avail = scroll.height - scroll.paddingTop - scroll.paddingBottom
+            val over = child.height - avail
+            if (avail <= 0 || over <= 0 || keyShrink >= maxShrink || keypad.visibility != View.VISIBLE) return@addOnLayoutChangeListener
+            keyShrink = (keyShrink + over / 4 + (2 * dp).toInt()).coerceAtMost(maxShrink)
+            scroll.post { resizeKeys() }
+        }
+    }
+
+    private fun resizeKeys() {
+        val (keyW, keyH, vGap) = keyDims()
+        for (r in 0 until keypad.childCount) {
+            val row = keypad.getChildAt(r) as? LinearLayout ?: continue
+            for (c in 0 until row.childCount) {
+                val key = row.getChildAt(c)
+                val lp = key.layoutParams as LinearLayout.LayoutParams
+                lp.width = keyW; lp.height = keyH
+                if (r > 0) lp.topMargin = vGap
+                key.layoutParams = lp
+            }
+        }
+    }
+
     private fun fillKeypad(grid: LinearLayout) {
         grid.removeAllViews()
         val bioAvailable = (mode == MODE_UNLOCK || mode == MODE_CONFIRM) &&
@@ -351,9 +733,8 @@ class ScreenLockActivity : AppCompatActivity() {
             "6" to "MNO", "7" to "PQRS", "8" to "TUV", "9" to "WXYZ")
         val order = digitOrder()
         val rows = listOf(order.subList(0, 3), order.subList(3, 6), order.subList(6, 9), listOf("BIO", order[9], "DEL"))
-        val keySize = (78 * dp).toInt()
-        val hGap = (22 * dp).toInt()
-        val vGap = (14 * dp).toInt()
+        val (keyW, keyH, vGap) = keyDims()
+        val hGap = if (palette.retro) (6 * dp).toInt() else (22 * dp).toInt()
         rows.forEachIndexed { r, keys ->
             val row = LinearLayout(this).apply { orientation = LinearLayout.HORIZONTAL; gravity = Gravity.CENTER; clipChildren = false }
             keys.forEachIndexed { c, key ->
@@ -380,7 +761,7 @@ class ScreenLockActivity : AppCompatActivity() {
                     v.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
                     onKey(key)
                 }
-                row.addView(view, LinearLayout.LayoutParams(keySize, keySize).apply {
+                row.addView(view, LinearLayout.LayoutParams(keyW, keyH).apply {
                     if (c > 0) marginStart = hGap
                     if (r > 0) topMargin = vGap
                 })
@@ -516,9 +897,11 @@ class ScreenLockActivity : AppCompatActivity() {
             }
         }
         intent.getStringExtra(EXTRA_TITLE)?.let { tvTitle.text = it }
+        if (palette.retro && mode == MODE_UNLOCK) tvDescription.text = getString(R.string.retro_login_hint)
     }
 
     private fun playEntrance() {
+        if (palette.retro) return
         ring.scaleX = 0.6f; ring.scaleY = 0.6f; ring.alpha = 0f
         ring.animate().scaleX(1f).scaleY(1f).alpha(1f).setDuration(520)
             .setInterpolator(OvershootInterpolator(1.8f)).start()
@@ -632,9 +1015,9 @@ class ScreenLockActivity : AppCompatActivity() {
     }
 
     private fun updateNextButton() {
-        val needsNext = !autoConfirmCoversStep() && !inLockout
+        val needsNext = (palette.retro || !autoConfirmCoversStep()) && !inLockout
         btnNext.visibility = if (needsNext) View.VISIBLE else View.GONE
-        btnNext.text = getString(if ((mode == MODE_SET || mode == MODE_SET_DURESS) && firstPin.isNotEmpty()) R.string.lock_save else R.string.next)
+        if (!palette.retro) btnNext.text = getString(if ((mode == MODE_SET || mode == MODE_SET_DURESS) && firstPin.isNotEmpty()) R.string.lock_save else R.string.next)
         val ready = currentPin.length >= MIN_PIN
         btnNext.isEnabled = ready
         btnNext.animate().alpha(if (ready) 1f else 0.4f).setDuration(160).start()
@@ -714,7 +1097,7 @@ class ScreenLockActivity : AppCompatActivity() {
                     }
                     firstPin = currentPin
                     currentPin = ""
-                    pinField.clear()
+                    if (!advanceRetroField()) pinField.clear()
                     tvTitle.text = getString(R.string.lock_repeat_pin_title)
                     tvDescription.text = getString(R.string.lock_repeat_pin_desc)
                     autoConfirmRow?.animate()?.alpha(0f)?.translationY(10 * dp)?.setDuration(180)
@@ -800,7 +1183,7 @@ class ScreenLockActivity : AppCompatActivity() {
                     }
                     firstPin = currentPin
                     currentPin = ""
-                    pinField.clear()
+                    if (!advanceRetroField()) pinField.clear()
                     tvTitle.text = getString(R.string.lock_repeat_duress_title)
                     animateStep()
                     updateNextButton()
@@ -906,6 +1289,7 @@ class ScreenLockActivity : AppCompatActivity() {
     }
 
     private fun animateStep() {
+        if (palette.retro) { reshuffleKeypad(); return }
         for (v in listOf(tvTitle, tvDescription)) {
             v.alpha = 0f; v.translationX = 28 * dp
             v.animate().alpha(1f).translationX(0f).setDuration(320).setInterpolator(DecelerateInterpolator(1.6f)).start()

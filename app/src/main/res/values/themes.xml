@@ -147,6 +147,42 @@
         <item name="sinuschat_text_muted">#64748B</item>
     </style>
 
+    <style name="ShapeAppearance.SinusChat.Retro" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">2dp</item>
+    </style>
+
+    <style name="Theme.SinusChat.Dialog.Retro" parent="Theme.SinusChat.Dialog">
+        <item name="shapeAppearanceLargeComponent">@style/ShapeAppearance.SinusChat.Retro</item>
+        <item name="shapeAppearanceCornerExtraLarge">@style/ShapeAppearance.SinusChat.Retro</item>
+        <item name="dialogCornerRadius">2dp</item>
+    </style>
+
+    <style name="Theme.SinusChat.Retro" parent="Theme.SinusChat.Light">
+        <item name="materialAlertDialogTheme">@style/Theme.SinusChat.Dialog.Retro</item>
+        <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.SinusChat.Retro</item>
+        <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.SinusChat.Retro</item>
+        <item name="shapeAppearanceLargeComponent">@style/ShapeAppearance.SinusChat.Retro</item>
+        <item name="shapeAppearanceCornerExtraSmall">@style/ShapeAppearance.SinusChat.Retro</item>
+        <item name="shapeAppearanceCornerSmall">@style/ShapeAppearance.SinusChat.Retro</item>
+        <item name="shapeAppearanceCornerMedium">@style/ShapeAppearance.SinusChat.Retro</item>
+        <item name="shapeAppearanceCornerLarge">@style/ShapeAppearance.SinusChat.Retro</item>
+        <item name="shapeAppearanceCornerExtraLarge">@style/ShapeAppearance.SinusChat.Retro</item>
+        <item name="colorPrimary">#245EDB</item>
+        <item name="colorOnPrimary">#FFFFFF</item>
+        <item name="sinuschat_background">#C7D7EE</item>
+        <item name="sinuschat_background_solid">#C7D7EE</item>
+        <item name="sinuschat_surface">#DCE6F4</item>
+        <item name="sinuschat_surface_variant">#B3C9EA</item>
+        <item name="sinuschat_surface_elevated">#E6EEF9</item>
+        <item name="sinuschat_sheet">#E6EEF9</item>
+        <item name="sinuschat_border">#7F9DB9</item>
+        <item name="sinuschat_bubble_other">#DDE8F7</item>
+        <item name="sinuschat_text_primary">#10203A</item>
+        <item name="sinuschat_text_secondary">#3D5E8C</item>
+        <item name="sinuschat_text_muted">#5F7899</item>
+    </style>
+
     <style name="Theme.SinusChat.Dynamic" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="android:windowBackground">?android:attr/colorBackground</item>
         <item name="android:textColor">?android:attr/textColorPrimary</item>

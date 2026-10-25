@@ -357,11 +357,12 @@ class SetupStepFragment : Fragment() {
             root.addView(doneLogo)
         } else if (step == Step.TRANSLATE) {
             val white = pl.sinusoide.sinuschat.ui.IconDrawView.ink(ctx)
-            scrollHeader = pl.sinusoide.sinuschat.ui.IconDrawView(ctx).apply {
+            root.addView(pl.sinusoide.sinuschat.ui.IconDrawView(ctx).apply {
                 setColors(white, white)
                 setDrawing(pl.sinusoide.sinuschat.ui.IconDrawView.translate(ctx))
                 importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_NO
-            }
+                layoutParams = LinearLayout.LayoutParams(-1, (196 * dp).toInt())
+            })
         } else if (step == Step.BACKUP) {
             root.addView(pl.sinusoide.sinuschat.ui.CloudIconView(ctx).apply {
                 setColor(pl.sinusoide.sinuschat.ui.IconDrawView.ink(ctx))

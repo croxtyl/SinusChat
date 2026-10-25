@@ -387,6 +387,8 @@ When the user asks for a program, a web page, a document, a spreadsheet or a pre
 
     private fun bindViews(v: View) {
         val spacer = v.findViewById<View>(R.id.sinia_status_spacer)
+        if (pl.sinusoide.sinuschat.util.ThemeManager.isRetro(v.context))
+            spacer.background = pl.sinusoide.sinuschat.ui.RetroUi.statusArea()
         ViewCompat.setOnApplyWindowInsetsListener(spacer) { view, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             view.layoutParams.height = systemBars.top

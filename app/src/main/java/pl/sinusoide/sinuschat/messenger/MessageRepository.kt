@@ -213,7 +213,7 @@ object MessageRepository {
         if (resend) {
             pl.sinusoide.sinuschat.crypto.SignalProtocol.resetSession(context, recipientHash)
         }
-        val v2 = signalInner(context, msg, resend)?.let {
+        val v2 = if (resend) null else signalInner(context, msg, false)?.let {
             pl.sinusoide.sinuschat.crypto.SignalProtocol.encrypt(context, recipientHash, it.toString().toByteArray(Charsets.UTF_8))
         }
         if (v2 != null) {

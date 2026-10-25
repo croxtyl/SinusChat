@@ -33,6 +33,8 @@ class MessageListenerService : Service() {
 
     companion object {
         const val TAG = "MsgListener"
+        private const val RETRY_FIELD = "_retry"
+        private const val MAX_RETRIES = 4
         const val FG_CHANNEL_ID  = "sinuschat_fg_listener"
         const val FG_NOTIF_ID    = 9001
         const val ACTION_POLL_NOW = "pl.sinusoide.sinuschat.POLL_NOW"
@@ -565,9 +567,20 @@ class MessageListenerService : Service() {
     private fun handleIncoming(frame: JSONObject) {
         lastWakeMs = android.os.SystemClock.elapsedRealtime()
         val json = if (frame.optString("kind") == "sealed" || frame.optString("type") == "sealed") {
-            if (!frame.optBoolean("eph", false))
-                frame.optString("id").takeIf { it.isNotEmpty() }?.let { queueSealedAck(it) }
-            pl.sinusoide.sinuschat.crypto.SealedSender.unseal(this, frame) ?: run {
+            val eph = frame.optBoolean("eph", false)
+            val opened = pl.sinusoide.sinuschat.crypto.SealedSender.unseal(this, frame)
+            if (opened == null && !eph && E2EManager.myPrivateKeyBytes(this) == null) {
+                val tries = frame.optInt(RETRY_FIELD, 0)
+                if (tries < MAX_RETRIES) {
+                    Log.w(TAG, "Koperta czeka — klucze chwilowo niedostępne")
+                    pl.sinusoide.sinuschat.util.LinkLog.add(this, "sealed", "klucze chwilowo niedostępne, próba ${tries + 1}")
+                    pl.sinusoide.sinuschat.util.LockedInbox.add(this, JSONObject(frame.toString()).put(RETRY_FIELD, tries + 1).toString())
+                    mainHandler.postDelayed({ pollPendingMessages() }, 15_000L * (tries + 1))
+                    return
+                }
+            }
+            if (!eph) frame.optString("id").takeIf { it.isNotEmpty() }?.let { queueSealedAck(it) }
+            opened ?: run {
                 Log.w(TAG, "Koperty nie da się otworzyć — pominięta")
                 return
             }
@@ -1110,8 +1123,16 @@ class MessageListenerService : Service() {
                             deliverIncoming(convId, senderHash, entity)
                         }
                         pl.sinusoide.sinuschat.crypto.SignalProtocol.Opened.Duplicate -> {}
-                        pl.sinusoide.sinuschat.crypto.SignalProtocol.Opened.Failed -> onUndecryptable(convId, msgId, senderHash, createdAt)
+                        pl.sinusoide.sinuschat.crypto.SignalProtocol.Opened.Failed -> onUndecryptable(convId, msgId, senderHash, createdAt, "v2")
+                        pl.sinusoide.sinuschat.crypto.SignalProtocol.Opened.Unavailable ->
+                            if (!retryLater(convId, msgId, kind, senderHash, payload, createdAt))
+                                onUndecryptable(convId, msgId, senderHash, createdAt, "v2 store")
                     }
+                    return
+                }
+                if (E2EManager.myPrivateKeyBytes(this) == null) {
+                    if (!retryLater(convId, msgId, kind, senderHash, payload, createdAt))
+                        onUndecryptable(convId, msgId, senderHash, createdAt, "v1 keys")
                     return
                 }
                 E2EManager.getSharedSecretForUser(this, senderHash) { cached ->
@@ -1123,7 +1144,7 @@ class MessageListenerService : Service() {
                                 ?.let { secret = it }
                         }
                         if (!opens(payload, secret)) {
-                            onUndecryptable(convId, msgId, senderHash, createdAt)
+                            onUndecryptable(convId, msgId, senderHash, createdAt, "v1")
                             return@io
                         }
                         val finalEntity = decryptPayload(convId, msgId, senderHash, payload, secret, createdAt)
@@ -1283,7 +1304,24 @@ class MessageListenerService : Service() {
         }
     }
 
-    private fun onUndecryptable(convId: String, msgId: String, senderHash: String, createdAt: Long) {
+    private fun retryLater(
+        convId: String, msgId: String, kind: String, senderHash: String, payload: JSONObject, createdAt: Long
+    ): Boolean {
+        val tries = payload.optInt(RETRY_FIELD, 0)
+        if (tries >= MAX_RETRIES) return false
+        payload.put(RETRY_FIELD, tries + 1)
+        val frame = JSONObject()
+            .put("type", "message").put("kind", kind).put("senderHash", senderHash)
+            .put("conversationId", convId).put("id", msgId).put("createdAt", createdAt).put("sealed", true)
+            .put("payloadB64", Base64.encodeToString(payload.toString().toByteArray(Charsets.UTF_8), Base64.NO_WRAP))
+        pl.sinusoide.sinuschat.util.LinkLog.add(this, "decrypt", "klucze chwilowo niedostępne, próba ${tries + 1}")
+        pl.sinusoide.sinuschat.util.LockedInbox.add(this, frame.toString())
+        mainHandler.postDelayed({ pollPendingMessages() }, 15_000L * (tries + 1))
+        return true
+    }
+
+    private fun onUndecryptable(convId: String, msgId: String, senderHash: String, createdAt: Long, path: String) {
+        pl.sinusoide.sinuschat.util.LinkLog.add(this, "undecryptable", path + if (msgId.contains(MessageRepository.RESEND_MARK)) " (resend)" else "")
         MessageRepository.publishDelivered(this, convId, myPhoneHash, createdAt)
         if (msgId.isEmpty() || GroupRepository.isGroup(convId)) return
         if (msgId.contains(MessageRepository.RESEND_MARK)) return

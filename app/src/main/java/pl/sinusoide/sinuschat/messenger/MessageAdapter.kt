@@ -105,6 +105,42 @@ class MessageAdapter(
     private var flowCache: Boolean? = null
     private fun flowUi(ctx: android.content.Context): Boolean =
         flowCache ?: pl.sinusoide.sinuschat.util.ThemeManager.isFlow(ctx).also { flowCache = it }
+    private fun applyRetroRow(
+        holder: VH, item: MessageEntity, isMine: Boolean,
+        params: FrameLayout.LayoutParams, bubbleLp: LinearLayout.LayoutParams
+    ) {
+        val ctx = holder.itemView.context
+        params.width = ViewGroup.LayoutParams.MATCH_PARENT
+        params.gravity = Gravity.START
+        params.marginStart = 0
+        holder.bubbleContainer!!.layoutParams = params
+        bubbleLp.width = ViewGroup.LayoutParams.MATCH_PARENT
+        bubbleLp.gravity = Gravity.START
+        holder.bubble!!.layoutParams = bubbleLp
+        holder.bubble.background = android.graphics.drawable.ColorDrawable(
+            if (isMine) pl.sinusoide.sinuschat.ui.RetroUi.ROW_MINE else pl.sinusoide.sinuschat.ui.RetroUi.ROW_OTHER)
+        holder.bubble.elevation = 0f
+        holder.senderAvatar?.visibility = View.GONE
+        holder.senderName?.let { tv ->
+            val who = if (isMine) ctx.getString(R.string.retro_me)
+                else senderName?.invoke(item.senderHash)?.takeIf { it.isNotBlank() } ?: ctx.getString(R.string.chat_partner)
+            val time = SimpleDateFormat("HH:mm", Locale.getDefault()).format(Date(item.timestampMs))
+            tv.setTypeface(null, android.graphics.Typeface.NORMAL)
+            tv.text = android.text.SpannableStringBuilder(who).apply {
+                setSpan(android.text.style.ForegroundColorSpan(pl.sinusoide.sinuschat.ui.RetroUi.NAVY), 0, length, 0)
+                setSpan(android.text.style.StyleSpan(android.graphics.Typeface.BOLD), 0, length, 0)
+                val start = length
+                append(" ($time)")
+                setSpan(android.text.style.ForegroundColorSpan(pl.sinusoide.sinuschat.ui.RetroUi.TIME_MINE), start, length, 0)
+            }
+            tv.visibility = View.VISIBLE
+        }
+        holder.time!!.visibility = View.GONE
+    }
+
+    private var retroCache: Boolean? = null
+    private fun retroUi(ctx: android.content.Context): Boolean =
+        retroCache ?: pl.sinusoide.sinuschat.util.ThemeManager.isRetro(ctx).also { retroCache = it }
     private val waveformCache = mutableMapOf<String, FloatArray>()
     private var currentlyPlayingId: String? = null
 
@@ -916,8 +952,9 @@ class MessageAdapter(
             reactionsLp?.gravity = Gravity.END
 
             if (flowUi(ctx)) holder.bubble.background = pl.sinusoide.sinuschat.ui.FlowGlass.bubble(ctx, mine = true)
+            else if (retroUi(ctx)) holder.bubble.background = android.graphics.drawable.ColorDrawable(pl.sinusoide.sinuschat.ui.RetroUi.ROW_MINE)
             else holder.bubble.setBackgroundResource(R.drawable.bg_bubble_mine)
-            holder.time.setTextColor(Color.parseColor("#B0D4F1"))
+            holder.time.setTextColor(if (retroUi(ctx)) pl.sinusoide.sinuschat.ui.RetroUi.TIME_MINE else Color.parseColor("#B0D4F1"))
             holder.statusIcon!!.visibility = View.VISIBLE
             val otherHash = otherHashOfConversation()
             if (BlockList.isBlockedByThem(holder.itemView.context, otherHash) && item.status == "pending") {
@@ -953,8 +990,9 @@ class MessageAdapter(
             reactionsLp?.gravity = Gravity.START
 
             if (flowUi(ctx)) holder.bubble.background = pl.sinusoide.sinuschat.ui.FlowGlass.bubble(ctx, mine = false)
+            else if (retroUi(ctx)) holder.bubble.background = android.graphics.drawable.ColorDrawable(pl.sinusoide.sinuschat.ui.RetroUi.ROW_OTHER)
             else holder.bubble.setBackgroundResource(R.drawable.bg_bubble_other)
-            holder.time.setTextColor(Color.parseColor("#999999"))
+            holder.time.setTextColor(if (retroUi(ctx)) pl.sinusoide.sinuschat.ui.RetroUi.TIME_MINE else Color.parseColor("#999999"))
             holder.statusIcon!!.visibility = View.GONE
         }
         holder.bubbleContainer.layoutParams = params
@@ -963,6 +1001,7 @@ class MessageAdapter(
         if (replyLp != null) holder.replyQuote.layoutParams = replyLp
         if (pinLp != null) holder.pinIndicator.layoutParams = pinLp
         if (reactionsLp != null) holder.reactionsScroll.layoutParams = reactionsLp
+        if (retroUi(ctx)) applyRetroRow(holder, item, isMine, params, bubbleLp)
 
         holder.reactionsRow!!.removeAllViews()
         if (item.reactions.isEmpty()) { holder.reactionsScroll!!.visibility = View.GONE } else {

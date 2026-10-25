@@ -49,6 +49,7 @@ class SlideNavBar @JvmOverloads constructor(
 
     private val density = resources.displayMetrics.density
     private val flow = !isInEditMode && ThemeManager.isFlow(context)
+    private val retro = !isInEditMode && ThemeManager.isRetro(context)
     private var colorActive = 0
     private var colorInactive = 0
 
@@ -115,6 +116,12 @@ class SlideNavBar @JvmOverloads constructor(
             capsulePaint.color = 0x17FFFFFF
             capsuleRimPaint.strokeWidth = 1f * density
             pillPaint.color = 0x1FFFFFFF
+        } else if (retro) {
+            background = RetroUi.bottomBar(context)
+            colorActive = RetroUi.NAVY
+            colorInactive = 0xFF3D5E8C.toInt()
+            val p = (3 * density).toInt()
+            setPadding(p, (4 * density).toInt(), p, (3 * density).toInt())
         } else {
             colorActive = pl.sinusoide.sinuschat.ui.ThemeUi.attrOrNull(context, androidx.appcompat.R.attr.colorPrimary) ?: Color.parseColor("#5288C1")
             colorInactive = pl.sinusoide.sinuschat.ui.ThemeUi.attrOrNull(context, R.attr.sinuschat_text_muted) ?: Color.parseColor("#5E6D7E")
@@ -147,9 +154,16 @@ class SlideNavBar @JvmOverloads constructor(
             contentDescription = tab.label
             setOnClickListener {
                 performHapticFeedback(HapticFeedbackConstants.CLOCK_TICK)
-                if (index == selectedIndex) bounceIcon(index) else select(index, notify = true)
+                if (index == selectedIndex) { if (!retro) bounceIcon(index) } else select(index, notify = true)
             }
-            setOnTouchListener { v, e ->
+            if (retro) {
+                setPadding(0, (4 * density).toInt(), 0, (4 * density).toInt())
+                layoutParams = LinearLayout.LayoutParams(0, LayoutParams.WRAP_CONTENT, 1f).apply {
+                    val m = (2 * density).toInt()
+                    setMargins(m, 0, m, 0)
+                }
+                background = RetroUi.button(context)
+            } else setOnTouchListener { v, e ->
                 when (e.actionMasked) {
                     MotionEvent.ACTION_DOWN ->
                         v.animate().scaleX(0.94f).scaleY(0.94f).setDuration(90).start()
@@ -248,6 +262,10 @@ class SlideNavBar @JvmOverloads constructor(
         selectedIndex = index
         hoverIndex = index
         applyState(animateIcon = true)
+        if (retro) {
+            if (notify) onTabSelected?.invoke(index)
+            return
+        }
         if (flow) setPositionSpring(stiffness = 360f, damping = 0.8f)
         else setPositionSpring(stiffness = 520f, damping = 0.86f)
         targetCx = cellCenter(index)
@@ -262,6 +280,10 @@ class SlideNavBar @JvmOverloads constructor(
             val on = i == lit
             tv.setTextColor(if (on) colorActive else colorInactive)
             tv.typeface = if (on) Typeface.DEFAULT_BOLD else Typeface.DEFAULT
+        }
+        if (retro) {
+            cells.forEachIndexed { i, c -> c.background = if (i == lit) RetroUi.pressed(context) else RetroUi.button(context) }
+            return
         }
         if (animateIcon) bounceIcon(selectedIndex)
     }
@@ -504,7 +526,7 @@ class SlideNavBar @JvmOverloads constructor(
     }
 
     override fun dispatchDraw(canvas: Canvas) {
-        if (cells.isEmpty() || width == 0) { super.dispatchDraw(canvas); return }
+        if (retro || cells.isEmpty() || width == 0) { super.dispatchDraw(canvas); return }
         if (!initialized) snapToSelected()
 
         if (animating) {

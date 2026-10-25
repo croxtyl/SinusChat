@@ -241,7 +241,7 @@ object ProfileCrypto {
     fun isEncryptedAvatar(url: String?) = url != null && url.substringBefore('?').endsWith(".bin")
 
     fun sealAvatar(ctx: Context, imageBytes: ByteArray): ByteArray? {
-        val bmp = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size) ?: return null
+        val bmp = pl.sinusoide.sinuschat.util.ImagePrep.decodeSampled(imageBytes, AVATAR_MAX_PX * 2) ?: return null
         val scale = minOf(1f, AVATAR_MAX_PX.toFloat() / maxOf(bmp.width, bmp.height))
         val scaled = if (scale < 1f)
             Bitmap.createScaledBitmap(bmp, (bmp.width * scale).toInt().coerceAtLeast(1), (bmp.height * scale).toInt().coerceAtLeast(1), true)

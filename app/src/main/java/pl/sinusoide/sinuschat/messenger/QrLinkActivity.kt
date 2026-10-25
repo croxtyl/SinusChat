@@ -101,7 +101,10 @@ class QrLinkActivity : AppCompatActivity() {
                 }
                 val (hash, name) = decoded
                 if (hash == myHash) { fail("invite_own"); return }
-                showInvite(name, hash, null) { openChat(myHash, hash, name) }
+                showInvite(name, hash, null) {
+                    ContactQr.remember(this, t)
+                    openChat(myHash, hash, name)
+                }
             }
         }
     }

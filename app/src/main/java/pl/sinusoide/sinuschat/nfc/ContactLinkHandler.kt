@@ -46,6 +46,7 @@ object ContactLinkHandler {
         val myHash = SetupActivity.getUserPhoneHash(context)
         if (hash == myHash) return Result.OWN_CODE
 
+        ContactQr.remember(context, token)
         val convId = if (myHash < hash) "${myHash}_${hash}" else "${hash}_${myHash}"
         val intent = Intent(context, ChatActivity::class.java).apply {
             putExtra("conversationId", convId)

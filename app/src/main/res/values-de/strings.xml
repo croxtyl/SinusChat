@@ -1362,6 +1362,12 @@
     <string name="theme_selected">Ausgewählt: %1$s</string>
     <string name="theme_desc_dark">Ein dunkelblauer Hintergrund, der abends die Augen schont und auf OLED-Bildschirmen Akku spart.</string>
     <string name="theme_desc_light">Heller Hintergrund und weiße Sprechblasen – gut lesbar in der Sonne und bei hellem Licht.</string>
+    <string name="theme_retro">Späte 2000er</string>
+    <string name="theme_desc_retro">Wie Messenger aus den späten 2000ern: helle Fenster, blaue Verlaufsleisten und eckige Blasen.</string>
+    <string name="retro_me">Ich</string>
+    <string name="retro_online">Online</string>
+    <string name="retro_groups">Gruppen</string>
+    <string name="retro_offline">Offline</string>
     <string name="theme_desc_dynamic">Farben passend zum Hintergrundbild des Handys. Heller oder dunkler Modus wechselt mit der Systemeinstellung.</string>
     <string name="theme_desc_flow">Marineblau und Cyan wie auf sinusoide.pl, darauf Karten aus Glas. Eine schwebende Navigationsleiste mit Linse: Halte die Auswahl gedrückt und ziehe sie – Symbole und Beschriftungen brechen sich wie in echtem Glas.</string>
     <string name="theme_dynamic_unavailable">Das Design mit Systemfarben erfordert Android 12 oder neuer.</string>
@@ -1986,4 +1992,8 @@
     <string name="walkie_failed">Das Walkie-Talkie konnte nicht gestartet werden. Prüfe, ob du in einem WLAN bist.</string>
     <string name="walkie_ring_title">Walkie-Talkie: %1$s</string>
     <string name="walkie_ring_text">Jemand aus der Gruppe hat im selben WLAN das Walkie-Talkie eingeschaltet</string>
+    <string name="retro_pin_new">Neue PIN:</string>
+    <string name="retro_pin_repeat">Neue PIN bestätigen:</string>
+    <string name="retro_login_hint">Geben Sie zum Starten Ihre PIN ein</string>
+    <string name="draft_prefix">Entwurf:</string>
 </resources>

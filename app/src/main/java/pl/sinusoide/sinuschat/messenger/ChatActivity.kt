@@ -414,6 +414,23 @@ open class ChatActivity : AppCompatActivity() {
         if (atBottom && adapter.itemCount > 0) recycler.scrollToPosition(adapter.itemCount - 1)
     }
 
+    private fun setupRetro() {
+        if (!ThemeManager.isRetro(this)) return
+        val retro = pl.sinusoide.sinuschat.ui.RetroUi
+        findViewById<View>(R.id.status_bar_spacer).background = retro.statusArea()
+        retro.styleTitleBar(findViewById(R.id.chat_toolbar))
+        findViewById<View>(R.id.chat_input_container).background = retro.bottomBar(this)
+        findViewById<View>(R.id.nav_bar_spacer).setBackgroundColor(retro.CHROME)
+        findViewById<View>(R.id.chat_input).background = retro.sunken(this)
+        findViewById<android.widget.ImageButton>(R.id.btn_send_message).apply {
+            backgroundTintList = null
+            background = retro.button(this@ChatActivity)
+            imageTintList = android.content.res.ColorStateList.valueOf(retro.TITLE_MID)
+            elevation = 0f
+        }
+        retro.lightStatusIcons(this)
+    }
+
     private fun setupFlowGlass() {
         if (!ThemeManager.isFlow(this)) return
         val dp = resources.displayMetrics.density
@@ -896,6 +913,7 @@ open class ChatActivity : AppCompatActivity() {
         basePaddingTop = recycler.paddingTop
         recycler.clipToPadding = false
         setupFlowGlass()
+        setupRetro()
 
         if (isGroup) {
             loadGroupProfile()
@@ -939,6 +957,11 @@ open class ChatActivity : AppCompatActivity() {
         val forwardedText = intent.getStringExtra("FORWARDED_TEXT")
         if (forwardedText != null) {
             inputMessage.setText(forwardedText)
+        } else {
+            pl.sinusoide.sinuschat.util.Drafts.get(this, conversationId)?.let {
+                inputMessage.setText(it)
+                inputMessage.setSelection(inputMessage.text.length)
+            }
         }
         val forwardedUris = androidx.core.content.IntentCompat.getParcelableArrayListExtra(intent, "FORWARDED_URIS", Uri::class.java)
         forwardedUris?.forEach { uri ->
@@ -4318,6 +4341,7 @@ open class ChatActivity : AppCompatActivity() {
 
     override fun onPause() {
         super.onPause()
+        if (::inputMessage.isInitialized) pl.sinusoide.sinuschat.util.Drafts.save(this, conversationId, inputMessage.text.toString())
         stopCallWatch()
         mediaHandle?.pause()
         AttachmentSender.onLocalChanged = null

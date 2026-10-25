@@ -253,6 +253,11 @@ object ApiClient {
                 if (getAuthProof(context) == null) pl.sinusoide.sinuschat.setup.AnonAccount.refreshProof(context)
                 val pubKey = pl.sinusoide.sinuschat.crypto.E2EManager.getMyPublicKey(context)
                     ?: run {
+                        if (!pl.sinusoide.sinuschat.crypto.E2EManager.keysMissing(context)) {
+                            pl.sinusoide.sinuschat.util.AppExecutor.main { onDone(false) }
+                            return@io
+                        }
+                        pl.sinusoide.sinuschat.util.LinkLog.add(context, "keys", "brak klucza przy rejestracji, tworzę nowy")
                         val kp = pl.sinusoide.sinuschat.crypto.E2EManager.generateKeys(context)
                         android.util.Base64.encodeToString(kp.publicKey.serialize(), android.util.Base64.NO_WRAP)
                     }

@@ -29,6 +29,14 @@ object E2EManager {
         getPrefs(context).getString(KEY_PRIVATE, null) != null
     } catch (e: Throwable) { false }
 
+    fun keysMissing(context: Context): Boolean = try {
+        getPrefs(context).getString(KEY_PRIVATE, null) == null
+    } catch (e: Throwable) {
+        Log.w(TAG, "Magazyn kluczy chwilowo niedostępny: ${e.javaClass.simpleName}")
+        pl.sinusoide.sinuschat.util.LinkLog.add(context, "keys", "magazyn niedostępny: ${e.javaClass.simpleName}")
+        false
+    }
+
     enum class EncState { ENCRYPTED, NOT_ENCRYPTED, ERROR }
     class EncryptionStatus(val state: EncState, val error: String? = null)
 

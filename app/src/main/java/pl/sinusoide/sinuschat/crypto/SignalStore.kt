@@ -53,7 +53,10 @@ class SignalStore private constructor(
             var pass = prefs.getString("k", null)
             val file = app.getDatabasePath(DB_NAME)
             if (pass == null) {
-                if (file.exists()) app.deleteDatabase(DB_NAME)
+                if (file.exists()) {
+                    pl.sinusoide.sinuschat.util.LinkLog.add(app, "signal", "brak hasła magazynu, zakładam nowy")
+                    app.deleteDatabase(DB_NAME)
+                }
                 pass = Base64.encodeToString(ByteArray(32).also { SecureRandom().nextBytes(it) }, Base64.NO_WRAP)
                 prefs.edit().putString("k", pass).commit()
             }
@@ -61,12 +64,29 @@ class SignalStore private constructor(
             val db = try {
                 openDb(file.path, pass!!)
             } catch (e: Exception) {
+                if (!unreadable(e)) {
+                    pl.sinusoide.sinuschat.util.LinkLog.add(app, "signal", "magazyn chwilowo zamknięty: ${e.javaClass.simpleName}")
+                    throw e
+                }
                 Log.e(TAG, "Baza protokołu nie do otwarcia — zakładam nową", e)
+                pl.sinusoide.sinuschat.util.LinkLog.add(app, "signal", "magazyn uszkodzony, zakładam nowy: ${e.javaClass.simpleName}")
                 app.deleteDatabase(DB_NAME)
                 openDb(file.path, pass!!)
             }
             db.execSQL("CREATE TABLE IF NOT EXISTS kv (ns TEXT NOT NULL, k TEXT NOT NULL, v BLOB NOT NULL, PRIMARY KEY (ns, k))")
             return SignalStore(app, db)
+        }
+
+        private fun unreadable(e: Throwable): Boolean {
+            var t: Throwable? = e
+            while (t != null) {
+                val n = t.javaClass.simpleName
+                val m = t.message.orEmpty().lowercase()
+                if (n.contains("NotADatabase") || n.contains("Corrupt") ||
+                    m.contains("not a database") || m.contains("malformed")) return true
+                t = t.cause
+            }
+            return false
         }
 
         private fun openDb(path: String, pass: String): SQLiteDatabase =

@@ -103,6 +103,7 @@ class SinusApp : Application() {
                 if (a is pl.sinusoide.sinuschat.util.CropActivity) return
                 ThemeManager.applyBackdrop(a)
                 pl.sinusoide.sinuschat.ui.FlowGlass.install(a)
+                pl.sinusoide.sinuschat.ui.RetroShape.install(a)
                 if (a is pl.sinusoide.sinuschat.call.CallActivity || a is pl.sinusoide.sinuschat.call.GroupCallActivity || a is SetupActivity ||
                     a is pl.sinusoide.sinuschat.messenger.QrScanActivity ||
                     a is pl.sinusoide.sinuschat.messenger.ViewOnceActivity) return

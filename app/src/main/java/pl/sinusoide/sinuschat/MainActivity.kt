@@ -126,7 +126,8 @@ class MainActivity : AppCompatActivity() {
                     pl.sinusoide.sinuschat.call.CallNotifier.createChannel(this)
                     registerNtfyTopic(phoneHash)
 
-                    if (!E2EManager.hasKeys(this)) {
+                    if (E2EManager.keysMissing(this)) {
+                        pl.sinusoide.sinuschat.util.LinkLog.add(this, "keys", "brak klucza, tworzę nowy")
                         E2EManager.generateAndUploadKeys(this, phoneHash) { success ->
                             Log.d("MainActivity", "E2E key generation: $success")
                         }
@@ -281,11 +282,17 @@ class MainActivity : AppCompatActivity() {
         viewPager = findViewById(R.id.view_pager)
         bottomNav = findViewById(R.id.bottom_nav)
         if (ThemeManager.isFlow(this)) findViewById<android.view.View>(R.id.main_nav_spacer).background = null
+        if (ThemeManager.isRetro(this)) {
+            bottomNav.background = pl.sinusoide.sinuschat.ui.RetroUi.bottomBar(this)
+            findViewById<android.view.View>(R.id.main_nav_spacer).setBackgroundColor(pl.sinusoide.sinuschat.ui.RetroUi.CHROME)
+            pl.sinusoide.sinuschat.ui.RetroUi.lightStatusIcons(this)
+        }
         viewPager.adapter = ViewPagerAdapter(this)
         viewPager.isUserInputEnabled = false
 
+        val retroTabs = ThemeManager.isRetro(this)
         bottomNav.onTabSelected = { index ->
-            viewPager.currentItem = index
+            viewPager.setCurrentItem(index, !retroTabs)
         }
 
         viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {

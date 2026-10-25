@@ -44,7 +44,7 @@ class NfcContactService : HostApduService() {
                 return UNKNOWN_CMD
             }
 
-            val token = ContactQr.encode(myHash, myName)
+            val token = ContactQr.encode(myHash, myName, pl.sinusoide.sinuschat.crypto.ProfileCrypto.myKeyB64(applicationContext))
             val payload = "${AppConfig.ADD_LINK_BASE}$token"
             val data = payload.toByteArray(Charsets.UTF_8)
             Log.d(TAG, "Wysyłam kontakt przez NFC (${data.size} B)")

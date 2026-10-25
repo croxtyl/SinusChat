@@ -19,6 +19,7 @@ object AvatarHelper {
     private const val TAG   = "AvatarHelper"
     private const val PREFS = "sinuschat_avatar_prefs"
     private const val AVATAR_FILENAME = "my_avatar.jpg"
+    private const val LOCAL_AVATAR_MAX_PX = 1024
 
     val PALETTE = listOf(
         "#5288C1",
@@ -68,8 +69,8 @@ object AvatarHelper {
     }
 
     fun saveAvatarLocally(context: Context, uri: Uri): String? = try {
-        val inputStream = context.contentResolver.openInputStream(uri) ?: return null
-        val bitmap = BitmapFactory.decodeStream(inputStream).also { inputStream.close() } ?: return null
+        val bytes = context.contentResolver.openInputStream(uri)?.use { it.readBytes() } ?: return null
+        val bitmap = ImagePrep.decodeSampled(bytes, LOCAL_AVATAR_MAX_PX) ?: return null
         val file = File(context.filesDir, AVATAR_FILENAME)
         FileOutputStream(file).use { bitmap.compress(Bitmap.CompressFormat.JPEG, 85, it) }
         bitmap.recycle()
@@ -84,7 +85,7 @@ object AvatarHelper {
             pl.sinusoide.sinuschat.network.ApiClient.rawGet(context, url)
                 ?.takeIf { it.first in 200..299 }?.second ?: ByteArray(0)
         }
-        val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+        val bitmap = ImagePrep.decodeSampled(bytes, LOCAL_AVATAR_MAX_PX)
         if (bitmap == null) null else {
             val file = File(context.filesDir, AVATAR_FILENAME)
             FileOutputStream(file).use { bitmap.compress(Bitmap.CompressFormat.JPEG, 85, it) }
@@ -104,7 +105,7 @@ object AvatarHelper {
     fun loadAvatarInto(context: Context, imageView: android.widget.ImageView): Boolean {
         val path = getLocalAvatarPath(context) ?: return false
         return try {
-            val bitmap = BitmapFactory.decodeFile(path)
+            val bitmap = ImagePrep.decodeSampledFile(path, LOCAL_AVATAR_MAX_PX)
             if (bitmap != null) { imageView.setImageBitmap(bitmap); true } else false
         } catch (e: Exception) { Log.e(TAG, "Failed to load avatar", e); false }
     }
