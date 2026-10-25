@@ -143,6 +143,7 @@ async function main() {
       packageName,
       versionCode,
       downloadId,
+      alt: 'media',
     },
     { responseType: 'arraybuffer' }
   );
