@@ -132,7 +132,7 @@ jobs:
      run: ./gradlew bundleRelease --no-daemon --stacktrace
 
    - name: Upload to Google Play & Fetch Signed Universal APK
-     if: steps.check_version.outputs.changed == 'true' && (secrets.PLAY_SERVICE_ACCOUNT_JSON != '' || secrets.PLAY_SERVICE_ACCOUNT_BASE64 != '')
+     if: steps.check_version.outputs.changed == 'true'
      id: play_store_apk
      env:
       SERVICE_ACCOUNT_JSON: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}
@@ -142,6 +142,11 @@ jobs:
       PACKAGE_NAME: "pl.sinusoide.sinuschat"
       PLAY_TRACK: "internal"
      run: |
+      if [ -z "$SERVICE_ACCOUNT_JSON" ] && [ -z "$SERVICE_ACCOUNT_BASE64" ]; then
+        echo "No Google Play service account credentials provided. Skipping Google Play upload."
+        exit 0
+      fi
+
       echo "Installing Google Play Developer API client..."
       npm install --no-save googleapis
 
