@@ -144,17 +144,16 @@ async function main() {
       versionCode,
       downloadId,
     },
-    { responseType: 'stream' }
+    { responseType: 'arraybuffer' }
   );
 
-  const dest = fs.createWriteStream(outputApk);
-  await new Promise((resolve, reject) => {
-    dl.data.pipe(dest);
-    dest.on('finish', resolve);
-    dest.on('error', reject);
-  });
+  fs.writeFileSync(outputApk, Buffer.from(dl.data));
 
   const stats = fs.statSync(outputApk);
+  if (stats.size < 1024 * 1024) {
+    console.error(`[-] Error: Downloaded APK is too small (${stats.size} bytes)`);
+    process.exit(1);
+  }
   console.log(`[SUCCESS] Universal APK downloaded successfully (${(stats.size / 1024 / 1024).toFixed(2)} MB)!`);
   console.log(`[SUCCESS] File: ${outputApk} is signed with Google Play App Signing key.`);
 }
