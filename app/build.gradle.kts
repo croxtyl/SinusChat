@@ -9,6 +9,7 @@ val localProps = Properties().apply {
     val f = rootProject.file("local.properties")
     if (f.exists()) f.inputStream().use { load(it) }
 }
+
 fun fcmProp(key: String) = (localProps.getProperty(key) ?: "").trim().replace("\"", "")
 
 android {
